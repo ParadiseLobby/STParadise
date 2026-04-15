@@ -109,13 +109,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {false && (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #E0DDD8', padding: '12px 0', margin: '32px 0', flexWrap: 'wrap', gap: 12 }}>
-        <span style={{ ...M, fontSize: 10, color: '#1A1A1A', letterSpacing: '0.1em' }}>{count} RECORDS INDEXED</span>
-        <span style={{ ...M, fontSize: 9, color: '#A8A49E', letterSpacing: '0.1em' }}>CLEARANCE REQUEST OPEN · ARCHIVE ACCESSIBLE</span>
-      </div>
-
-      )}
 
       {featured && (
         <div style={{ marginBottom: '40px' }}>

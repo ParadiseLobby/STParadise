@@ -39,3 +39,8 @@
 - Turbopack root issue was resolved after installing dependencies in the v2 worktree.
 - Root tsconfig was updated to exclude sanity-studio.
 - Current remaining cleanup: remove the old suppressed strip in app/page.tsx.
+
+## CLEANUP PASS
+- Removed the dead suppressed strip from app/page.tsx manually.
+- No live ledger code was changed.
+- Build re-run after cleanup.
