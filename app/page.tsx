@@ -11,6 +11,15 @@ export const revalidate = 60;
 export default async function HomePage() {
   const allCases = await getAllCases();
   const count = allCases.length;
+  const pendingCount = allCases.filter((c) =>
+    ['PENDING REVIEW', 'MANUAL REVIEW REQUIRED', 'ON HOLD'].includes(c.status)
+  ).length;
+  const routedCount = allCases.filter((c) => c.routing_state?.trim()).length;
+  const withheldCount = allCases.filter(
+    (c) =>
+      c.status === 'ACCESS SUSPENDED' ||
+      c.exhibits?.some((exhibit) => exhibit.access !== 'open')
+  ).length;
 
   const sorted = [...allCases].sort((a, b) => {
     const aTime = a.intake_date ? new Date(a.intake_date).getTime() : 0;
@@ -27,16 +36,86 @@ export default async function HomePage() {
       : null;
 
   const M: React.CSSProperties = { fontFamily: 'var(--mono)' };
+  const operativeLine = featured
+    ? `${featured.case_number} / ${featured.status}`
+    : 'RECORD LOCKED / NO ACTIVE INTAKE';
+  const lastIntake = featured?.intake_date ?? 'RECORD LOCKED';
+  const accessState = withheldCount > 0 ? 'PARTIAL WITHHOLD' : 'ACCESSIBLE';
+  const withheldLog = [
+    featured?.case_number ? `${featured.case_number} / FIELD 03 / WITHHELD` : 'FIELD 03 / WITHHELD',
+    featured?.routing_state
+      ? `${featured.routing_state} / FIELD 07 / LOCKED`
+      : 'FIELD 07 / ROOT REF WITHHELD',
+    featured?.status ? `${featured.status} / FIELD 11 / REDACTED` : 'FIELD 11 / REDACTED',
+  ];
 
   return (
     <DocumentFrame systemCode="INTAKE-INDEX" pageRef="PL-ROOT-01">
 
       <HeroPanel />
 
+      <section className="intake-ledger">
+        <div className="intake-ledger-head">
+          <div className="intake-ledger-intro">
+            <span className="intake-ledger-kicker">INTAKE STATUS</span>
+            <span className="intake-ledger-line">{operativeLine}</span>
+          </div>
+          <div className="intake-ledger-meta">
+            <div className="intake-ledger-meta-item">
+              <span className="intake-ledger-meta-label">LAST INTAKE</span>
+              <span className="intake-ledger-meta-value">{lastIntake}</span>
+            </div>
+            <div className="intake-ledger-meta-item">
+              <span className="intake-ledger-meta-label">ROOT REF</span>
+              <span className="intake-ledger-meta-value">PL-ROOT-01</span>
+            </div>
+            <div className="intake-ledger-meta-item">
+              <span className="intake-ledger-meta-label">CLEARANCE REQUEST</span>
+              <span className="intake-ledger-meta-value">OPEN</span>
+            </div>
+            <div className="intake-ledger-meta-item">
+              <span className="intake-ledger-meta-label">ACCESS STATE</span>
+              <span className="intake-ledger-meta-value">{accessState}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="intake-ledger-grid">
+          {[
+            { label: 'ARCHIVE', value: count },
+            { label: 'PENDING', value: pendingCount },
+            { label: 'ROUTED', value: routedCount },
+            { label: 'WITHHELD', value: withheldCount },
+          ].map(({ label, value }) => (
+            <div key={label} className="intake-ledger-cell">
+              <span className="intake-ledger-cell-value">{String(value).padStart(2, '0')}</span>
+              <span className="intake-ledger-cell-label">{label}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="intake-ledger-friction">
+          <div className="intake-ledger-friction-head">
+            <span className="intake-ledger-kicker">WITHHELD INTAKE LOG</span>
+            <span className="intake-ledger-friction-state">RECORD LOCKED</span>
+          </div>
+          <div className="intake-ledger-friction-log">
+            {withheldLog.map((entry) => (
+              <div key={entry} className="intake-ledger-friction-entry">
+                {entry}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {false && (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #E0DDD8', padding: '12px 0', margin: '32px 0', flexWrap: 'wrap', gap: 12 }}>
         <span style={{ ...M, fontSize: 10, color: '#1A1A1A', letterSpacing: '0.1em' }}>{count} RECORDS INDEXED</span>
         <span style={{ ...M, fontSize: 9, color: '#A8A49E', letterSpacing: '0.1em' }}>CLEARANCE REQUEST OPEN · ARCHIVE ACCESSIBLE</span>
       </div>
+
+      )}
 
       {featured && (
         <div style={{ marginBottom: '40px' }}>

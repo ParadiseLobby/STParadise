@@ -47,3 +47,11 @@ selected works, about me, creative direction, storytelling, open for commission,
 3. Reduce polish.
 4. Add one useful friction artifact.
 5. Re-check that the page still converts.
+
+## Logging
+- Read PROJECT_LOG.md before any work.
+- After every approved pass, update PROJECT_LOG.md with:
+  - files changed
+  - what changed
+  - what remains for later
+- If PROJECT_LOG.md and the repo conflict, stop and report instead of guessing.
