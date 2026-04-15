@@ -1,0 +1,23 @@
+{
+  "case_number": "STP-003-ED",
+  "slug": "stp-003-editorial",
+  "title": "PUBLICATION LAYOUT — CLEARANCE PENDING",
+  "classification": "EDITORIAL / PUBLICATION",
+  "status": "PENDING REVIEW",
+  "year": 2023,
+  "medium": "Editorial Design, Layout, Publication",
+  "department": "EDITORIAL REVIEW BOARD",
+  "access_level": 2,
+  "summary_redacted": "Documentation pertains to the layout and production of a periodical publication. Grid systems, typographic hierarchies, and image placement records are included. Publication subject matter has not been fully disclosed to this office. Clearance request submitted on behalf of subject. Awaiting response from editorial oversight board.",
+  "exhibits": [
+    { "id": "EX-003A", "type": "image", "label": "SPREAD DOCUMENTATION — FOLIO 01-04", "access": "open" },
+    { "id": "EX-003B", "type": "image", "label": "GRID SYSTEM RECORD", "access": "open" },
+    { "id": "EX-003C", "type": "image", "label": "COVER — PENDING CLEARANCE", "access": "restricted" }
+  ],
+  "routing_state": "ROUTED",
+  "chain_of_custody": ["INTAKE", "INITIAL REVIEW", "EDITORIAL BOARD", "PENDING"],
+  "related_cases": ["STP-001-ID"],
+  "intake_date": "2023-04-18",
+  "last_modified": "2023-11-30",
+  "clerk_note": "Awaiting editorial board clearance. File may be partially released upon written approval."
+}

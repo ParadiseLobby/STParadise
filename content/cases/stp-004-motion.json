@@ -1,0 +1,23 @@
+{
+  "case_number": "STP-004-MV",
+  "slug": "stp-004-motion",
+  "title": "SEQUENCE DOCUMENTATION — ACCESS RESTRICTED",
+  "classification": "MOTION / TIME-BASED MEDIA",
+  "status": "ACCESS SUSPENDED",
+  "year": 2024,
+  "medium": "Motion Graphics, Title Design, Animation",
+  "department": "RESTRICTED MEDIA UNIT",
+  "access_level": 4,
+  "summary_redacted": "[FIELD REDACTED] [FIELD REDACTED] [FIELD REDACTED] Sequence materials held under media restriction protocol 7. Frame documentation withheld. Timing records classified. Subject matter cannot be disclosed without Level 4 clearance. All exhibits suspended. Contact Restricted Media Unit directly with clearance documentation.",
+  "exhibits": [
+    { "id": "EX-004A", "type": "video", "label": "SEQUENCE RECORD — MASTER", "access": "suspended" },
+    { "id": "EX-004B", "type": "image", "label": "FRAME DOCUMENTATION", "access": "suspended" },
+    { "id": "EX-004C", "type": "document", "label": "TIMING RECORD", "access": "suspended" }
+  ],
+  "routing_state": "ACCESS SUSPENDED",
+  "chain_of_custody": ["INTAKE", "MEDIA CLASSIFICATION", "RESTRICTION PROTOCOL 7", "SUSPENDED"],
+  "related_cases": [],
+  "intake_date": "2024-02-09",
+  "last_modified": "2024-03-15",
+  "clerk_note": "ACCESS SUSPENDED — Level 4 clearance required. Do not process without authorization."
+}

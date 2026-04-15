@@ -1,0 +1,21 @@
+{
+  "name": "paradise-lobby-studio",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "manage": "sanity manage"
+  },
+  "dependencies": {
+    "react": "^19",
+    "react-dom": "^19",
+    "sanity": "^3",
+    "styled-components": "^6.3.12"
+  },
+  "devDependencies": {
+    "@sanity/types": "^3",
+    "typescript": "^5"
+  }
+}

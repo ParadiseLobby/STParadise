@@ -1,0 +1,7 @@
+node_modules/
+sanity-studio/node_modules/
+.next/
+.env.local
+sanity-studio/.env
+sanity-studio/.env.txt
+tsconfig.tsbuildinfo

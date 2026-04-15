@@ -1,0 +1,23 @@
+{
+  "case_number": "STP-001-ID",
+  "slug": "stp-001-identity",
+  "title": "VISUAL IDENTITY SYSTEM — [FIELD REDACTED]",
+  "classification": "IDENTITY / VISUAL SYSTEMS",
+  "status": "PENDING REVIEW",
+  "year": 2023,
+  "medium": "Brand Identity, Print, Type",
+  "department": "CLASSIFICATION UNIT — SECTION 4",
+  "access_level": 2,
+  "summary_redacted": "Subject engaged in the construction of a visual identity system for an entity whose name has been withheld pending clearance. File contains specimen sheets, typeface documentation, and color field records. Distribution of exhibits requires written authorization from the reviewing officer. Current routing status indicates file is held at secondary classification stage.",
+  "exhibits": [
+    { "id": "EX-001A", "type": "image", "label": "SPECIMEN SHEET — PRIMARY MARK", "access": "restricted" },
+    { "id": "EX-001B", "type": "image", "label": "TYPE SPECIMEN — BODY SYSTEM", "access": "restricted" },
+    { "id": "EX-001C", "type": "image", "label": "COLOR FIELD DOCUMENTATION", "access": "open" }
+  ],
+  "routing_state": "ROUTED",
+  "chain_of_custody": ["INTAKE", "INITIAL CLASSIFICATION", "SECONDARY REVIEW", "HOLD"],
+  "related_cases": ["STP-003-ED", "STP-005-AP"],
+  "intake_date": "2023-09-14",
+  "last_modified": "2024-01-07",
+  "clerk_note": "Exhibit access pending authorization from Dept. Head. Do not release."
+}

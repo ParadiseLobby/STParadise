@@ -1,0 +1,23 @@
+{
+  "case_number": "STP-005-AP",
+  "slug": "stp-005-apparel",
+  "title": "MATERIAL EVIDENCE — GARMENT SERIES",
+  "classification": "APPAREL / MATERIAL GOODS",
+  "status": "PENDING REVIEW",
+  "year": 2023,
+  "medium": "Apparel Design, Print on Fabric, Object",
+  "department": "MATERIAL EVIDENCE DIVISION",
+  "access_level": 2,
+  "summary_redacted": "Physical garment series submitted for documentation and classification. Textile records and construction notes have been catalogued. Graphic elements applied to garments are cross-referenced with print division records. Items are held in material storage. Access to physical specimens requires coordination with Material Evidence Division. Photographic documentation partially available.",
+  "exhibits": [
+    { "id": "EX-005A", "type": "image", "label": "SPECIMEN — GARMENT TYPE A", "access": "open" },
+    { "id": "EX-005B", "type": "image", "label": "SPECIMEN — GARMENT TYPE B", "access": "open" },
+    { "id": "EX-005C", "type": "document", "label": "CONSTRUCTION RECORD", "access": "restricted" }
+  ],
+  "routing_state": "ROUTED",
+  "chain_of_custody": ["INTAKE", "MATERIAL CATALOGUING", "CROSS-REFERENCE CHECK", "PENDING REVIEW"],
+  "related_cases": ["STP-001-ID", "STP-002-PR"],
+  "intake_date": "2023-07-22",
+  "last_modified": "2024-01-14",
+  "clerk_note": "Physical specimens held in storage bay 3. Do not remove without Material Evidence authorization."
+}

@@ -1,0 +1,23 @@
+{
+  "case_number": "STP-006-EX",
+  "slug": "stp-006-experimental",
+  "title": "UNCLASSIFIED — MANUAL REVIEW REQUIRED",
+  "classification": "UNCLASSIFIED / PENDING",
+  "status": "MANUAL REVIEW REQUIRED",
+  "year": 2024,
+  "medium": "Mixed Media, Experimental, Unspecified",
+  "department": "UNCLASSIFIED MATERIALS UNIT",
+  "access_level": 1,
+  "summary_redacted": "File does not conform to standard classification categories. Subject matter resists taxonomic placement within existing departmental schema. Material has been flagged for manual review by senior classification officer. Existing documentation is incomplete. Exhibits present but methodology unclear. This record will remain open until a satisfactory classification can be assigned. Do not archive.",
+  "exhibits": [
+    { "id": "EX-006A", "type": "image", "label": "UNCLASSIFIED SPECIMEN A", "access": "open" },
+    { "id": "EX-006B", "type": "image", "label": "UNCLASSIFIED SPECIMEN B", "access": "restricted" },
+    { "id": "EX-006C", "type": "document", "label": "CLASSIFICATION ATTEMPT — FAILED", "access": "open" }
+  ],
+  "routing_state": "MANUAL REVIEW REQUIRED",
+  "chain_of_custody": ["INTAKE", "INITIAL CLASSIFICATION ATTEMPT", "CATEGORY FAILURE", "MANUAL REVIEW"],
+  "related_cases": ["STP-002-PR"],
+  "intake_date": "2024-01-30",
+  "last_modified": "2024-04-01",
+  "clerk_note": "MANUAL REVIEW REQUIRED. This file cannot be auto-processed. Escalate to senior officer."
+}

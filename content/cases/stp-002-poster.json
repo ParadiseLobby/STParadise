@@ -1,0 +1,23 @@
+{
+  "case_number": "STP-002-PR",
+  "slug": "stp-002-poster",
+  "title": "PRINT CAMPAIGN — UNAUTHORIZED DISTRIBUTION SUSPECTED",
+  "classification": "PRINT / CAMPAIGN MATERIAL",
+  "status": "ON HOLD",
+  "year": 2022,
+  "medium": "Screen Print, Offset, Poster",
+  "department": "RECORDS MANAGEMENT — PRINT DIVISION",
+  "access_level": 3,
+  "summary_redacted": "Series of print artifacts recovered from field. Method of original distribution remains under investigation. Imagery contains elements subject to ongoing classification dispute between departments. File flagged for dual review. Access to primary exhibits suspended until dispute resolution. Secondary documentation available to authorized personnel.",
+  "exhibits": [
+    { "id": "EX-002A", "type": "image", "label": "PRIMARY ARTIFACT — SERIES A", "access": "suspended" },
+    { "id": "EX-002B", "type": "image", "label": "PRIMARY ARTIFACT — SERIES B", "access": "suspended" },
+    { "id": "EX-002C", "type": "image", "label": "FIELD DOCUMENTATION", "access": "restricted" }
+  ],
+  "routing_state": "MANUAL REVIEW REQUIRED",
+  "chain_of_custody": ["FIELD RECOVERY", "INTAKE", "CLASSIFICATION DISPUTE", "DUAL REVIEW", "HOLD"],
+  "related_cases": ["STP-006-EX"],
+  "intake_date": "2022-11-03",
+  "last_modified": "2023-06-22",
+  "clerk_note": "Classification dispute between units 4 and 7 unresolved. Do not route further without supervisor approval."
+}
