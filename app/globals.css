@@ -229,13 +229,7 @@ nav a { cursor: none !important; }
   font-family: var(--mono);
 }
 
-/* Featured case card hover */
-.featured-card {
-  transition: background 0.1s;
-}
-.featured-card:hover {
-  background: #EDEAE4 !important;
-}
+/* Featured case card */
 
 /* ── Processing artifact — single scan line ── */
 .doc-frame {

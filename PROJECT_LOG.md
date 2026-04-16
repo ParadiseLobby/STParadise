@@ -44,3 +44,10 @@
 - Removed the dead suppressed strip from app/page.tsx manually.
 - No live ledger code was changed.
 - Build re-run after cleanup.
+
+## FEATURED RECORD PASS
+- Reclassified featured block toward evidence record language.
+- Removed .featured-card:hover.
+- Added thin evidence-status line in featured block.
+- Reduced featured body padding slightly.
+- Build re-run after patch.

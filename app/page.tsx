@@ -113,7 +113,7 @@ export default async function HomePage() {
       {featured && (
         <div style={{ marginBottom: '40px' }}>
           <div style={{ ...M, fontSize: 10, color: '#1A1A1A', letterSpacing: '0.14em', textTransform: 'uppercase', borderBottom: '1px solid #1A1A1A', paddingBottom: '6px', marginBottom: '16px' }}>
-            PRIMARY EXHIBIT — MOST RECENT INTAKE
+            EVIDENCE RECORD / LATEST INTAKE
           </div>
           <Link href={`/cases/${featured.slug}`} style={{ textDecoration: 'none', display: 'block' }}>
             <div style={{ display: 'flex', border: '1px solid #E0DDD8', background: '#F5F3EF' }} className="featured-card">
@@ -125,9 +125,12 @@ export default async function HomePage() {
                   <span style={{ ...M, fontSize: 10, color: '#A8A49E', letterSpacing: '0.1em', textAlign: 'center', padding: 20 }}>EXHIBIT WITHHELD</span>
                 )}
               </div>
-              <div style={{ flex: 1, padding: '28px 28px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 12 }}>
+              <div style={{ flex: 1, padding: '24px 24px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 12 }}>
                 <div style={{ ...M, fontSize: 9, color: '#C8C4BC', letterSpacing: '0.12em' }}>{featured.case_number}</div>
                 <div style={{ ...M, fontSize: 15, color: '#1A1A1A', fontWeight: 500, letterSpacing: '0.03em', lineHeight: 1.4 }}>{featured.title}</div>
+                <div style={{ ...M, fontSize: 9, color: '#7A766F', letterSpacing: '0.08em', textTransform: 'uppercase', borderTop: '1px solid #E0DDD8', paddingTop: 8 }}>
+                  {featured.status} / {featured.routing_state ?? 'ROUTING WITHHELD'} / {lastIntake}
+                </div>
                 <div style={{ display: 'flex', gap: 28, flexWrap: 'wrap', borderTop: '1px solid #E0DDD8', paddingTop: 14, marginTop: 4 }}>
                   {[{ k: 'CLASSIFICATION', v: featured.classification }, { k: 'STATUS', v: featured.status }, { k: 'YEAR', v: String(featured.year) }].map(({ k, v }) => (
                     <div key={k} style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
