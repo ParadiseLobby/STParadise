@@ -5,3 +5,5 @@ sanity-studio/node_modules/
 sanity-studio/.env
 sanity-studio/.env.txt
 tsconfig.tsbuildinfo
+
+n8n/
