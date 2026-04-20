@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PL_BUILD_GUIDE_v2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+:root{--paper:#E2D9C8;--ink:#1C1914;--accent:#5B6B8A;--void:#F0EBE1;--scan:#B8B0A4}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#1A1A1A;display:flex;flex-direction:column;align-items:center;padding:40px 20px;gap:48px;font-family:'Share Tech Mono','Courier New',monospace}
+.page{background:var(--paper);width:794px;min-height:1123px;padding:52px 60px 88px;position:relative;color:var(--ink);box-shadow:5px 5px 24px rgba(0,0,0,.55)}
+.page::before{content:'';position:absolute;left:0;top:0;bottom:0;width:7px;background:linear-gradient(to right,rgba(0,0,0,.13),transparent)}
+.dh{border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);padding:6px 0;display:flex;justify-content:space-between;align-items:baseline;margin-bottom:36px}
+.dr{font-size:7px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase}
+.dt{font-size:7px;letter-spacing:.25em;text-transform:uppercase}
+.dc{font-size:7px;letter-spacing:.12em;color:var(--scan)}
+.sl{font-size:7px;letter-spacing:.28em;color:var(--accent);text-transform:uppercase;border-bottom:1px solid var(--scan);padding-bottom:4px;margin-bottom:14px;margin-top:24px}
+.bt{font-size:8.5px;letter-spacing:.04em;line-height:1.75;margin-bottom:8px}
+.sr{display:flex;border-bottom:1px solid rgba(28,25,20,.1);min-height:34px}
+.sn{font-size:7px;letter-spacing:.13em;color:var(--accent);padding:10px 10px 8px 0;border-right:1px solid rgba(28,25,20,.12);min-width:56px;text-align:right}
+.sa{font-size:8.5px;letter-spacing:.035em;line-height:1.7;padding:8px 12px;flex:1}
+.sc{font-size:9px;color:var(--scan);padding:8px 10px;border-left:1px solid rgba(28,25,20,.12);min-width:40px;text-align:center}
+.kr{background:var(--ink);color:var(--paper);padding:11px 15px;margin:14px 0;font-size:8px;letter-spacing:.07em;line-height:1.8}
+.kl{font-size:6px;letter-spacing:.24em;margin-bottom:5px;opacity:.65;text-transform:uppercase}
+.cp{border:1px solid var(--ink);padding:10px 14px;margin:14px 0}
+.cpl{font-size:7px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;margin-bottom:5px}
+.cpt{font-size:8.5px;letter-spacing:.035em;line-height:1.65}
+tbl{width:100%;border-collapse:collapse;display:table;margin:8px 0}
+tbl td{font-size:8px;letter-spacing:.05em;padding:6px 8px;vertical-align:top;border-bottom:1px solid rgba(28,25,20,.1);line-height:1.65}
+tbl td:first-child{color:var(--accent);letter-spacing:.14em;text-transform:uppercase;font-size:7px;width:28%;white-space:nowrap;padding-top:8px}
+tbl tr:last-child td{border-bottom:none}
+.tc{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.nt{font-size:7px;color:var(--scan);letter-spacing:.07em;line-height:1.65;margin-top:5px}
+.lt{padding:10px 14px;border:1px solid rgba(28,25,20,.2);margin:10px 0;font-size:8px;letter-spacing:.04em;line-height:2}
+.lgh{color:var(--accent);letter-spacing:.15em;font-size:7.5px}
+.lsb{color:var(--ink);padding-left:18px;font-size:7.5px;display:block;line-height:1.8}
+.lmv{color:var(--accent);font-size:6.5px;letter-spacing:.12em}
+.lst{color:var(--scan);font-size:6.5px;letter-spacing:.1em}
+.mk{border:1px solid rgba(28,25,20,.25);padding:12px 14px;background:rgba(240,235,225,.5);margin:10px 0}
+.mkh{border-bottom:1px solid var(--ink);padding-bottom:4px;margin-bottom:7px;font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+.mkf{display:flex;justify-content:space-between;border-bottom:1px solid rgba(28,25,20,.1);padding:3px 0;font-size:7px}
+.mkfl{letter-spacing:.14em;color:var(--accent);text-transform:uppercase}
+.mkfr{letter-spacing:.06em;color:rgba(28,25,20,.3)}
+.fi{color:var(--ink)}
+.mkr{border-top:1px solid var(--ink);margin:5px 0 4px}
+.mki{background:rgba(28,25,20,.07);height:70px;margin:6px 0 0;display:flex;align-items:center;justify-content:center;font-size:6px;color:var(--scan);letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(28,25,20,.15)}
+.mkrd{background:var(--void);height:16px;width:55%}
+.mks{display:inline-block;border:1.5px solid var(--accent);color:var(--accent);font-size:5.5px;letter-spacing:.14em;padding:2px 5px;transform:rotate(-2.2deg);opacity:.78;margin:4px 0}
+.mkhr{font-size:30px;color:var(--ink);font-weight:bold;letter-spacing:.02em;line-height:1;margin:6px 0 4px}
+.db{border:1px solid var(--ink);padding:12px 16px;margin:12px 0}
+.dbt{font-size:7px;letter-spacing:.2em;color:var(--accent);text-transform:uppercase;margin-bottom:10px;border-bottom:1px solid rgba(28,25,20,.15);padding-bottom:5px}
+.dbg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.dbc{border:1px solid var(--scan);padding:8px;text-align:center}
+.dbl{font-size:6px;letter-spacing:.15em;color:var(--accent);text-transform:uppercase;margin-bottom:4px}
+.dbv{font-size:10px;letter-spacing:.08em}
+.sw{display:inline-block;width:10px;height:10px;border:1px solid rgba(0,0,0,.2);vertical-align:middle;margin-right:4px;position:relative;top:-1px}
+.pf{position:absolute;bottom:30px;left:60px;right:60px;border-top:1px solid var(--scan);padding-top:6px;display:flex;justify-content:space-between}
+.fo{font-size:6px;letter-spacing:.18em;color:var(--scan);text-transform:uppercase}
+.ph{display:flex;align-items:baseline;gap:14px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(28,25,20,.18);margin-top:22px}
+.pid{font-size:7px;letter-spacing:.25em;color:var(--accent);text-transform:uppercase;border:1px solid var(--accent);padding:3px 8px;white-space:nowrap}
+.pn{font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.pt{font-size:7px;letter-spacing:.12em;color:var(--scan);margin-left:auto;white-space:nowrap}
+.ib{border-left:3px solid var(--accent);padding:8px 14px;margin:8px 0}
+.il{font-size:7px;letter-spacing:.2em;color:var(--accent);text-transform:uppercase;margin-bottom:4px}
+.it{font-size:8px;letter-spacing:.04em;line-height:1.7}
+hr{border:none;border-top:1px solid rgba(28,25,20,.13);margin:20px 0}
+.stmp{display:inline-block;border:2px solid var(--accent);color:var(--accent);font-size:7px;letter-spacing:.2em;text-transform:uppercase;padding:3px 9px;transform:rotate(-1.6deg);opacity:.72;margin:8px 0}
+.lex{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:6px}
+.lw{font-size:7px;letter-spacing:.1em;padding:4px 6px;border:1px solid rgba(28,25,20,.15);text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 — OVERVIEW -->
+<div class="page">
+  <div class="dh">
+    <span class="dr">PL-BUILD-2025-002 // REV.2</span>
+    <span class="dt">PARADISE LOBBY — BUILD GUIDE</span>
+    <span class="dc">FRONT TO BACK / ONE COMPLETE CASE</span>
+  </div>
+
+  <div class="sl" style="margin-top:0">What this document is</div>
+  <div class="bt">Open this every time you build a case. It covers the complete production of one CUSTODY document and one DIRECTIVE document — blank canvas to Instagram post. Keep it open alongside Photoshop. When you lose your way, start from the top of whatever section you are in and work forward.</div>
+
+  <div class="sl">What one case produces</div>
+  <table style="width:100%;border-collapse:collapse;margin:8px 0">
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;width:28%;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);vertical-align:top;padding-top:8px">CUSTODY</td><td style="font-size:8px;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);line-height:1.65">Internal record. Template C1, C2, or C3. No hero word. Dense form logic. Built first. Always.</td></tr>
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;width:28%;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);vertical-align:top;padding-top:8px">DIRECTIVE</td><td style="font-size:8px;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);line-height:1.65">Outward classification. Template D1, D2, or D3. Hero word at 144px+. Built second. Always.</td></tr>
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;width:28%;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);vertical-align:top;padding-top:8px">Per document</td><td style="font-size:8px;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);line-height:1.65">4 Instagram slides: full document + 3 detail crops</td></tr>
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;width:28%;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);vertical-align:top;padding-top:8px">Total per case</td><td style="font-size:8px;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);line-height:1.65">8 slides across 2 posts, minimum 4 hours apart</td></tr>
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;width:28%;padding:6px 8px;vertical-align:top;padding-top:8px">Build time</td><td style="font-size:8px;padding:6px 8px;line-height:1.65">45 minutes following the daily execution order on this page</td></tr>
+  </table>
+
+  <div class="sl">Six elements — every document contains all six</div>
+  <table style="width:100%;border-collapse:collapse;margin:8px 0">
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;width:28%;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);vertical-align:top;padding-top:8px">1. Form structure</td><td style="font-size:8px;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);line-height:1.65">Header, field labels, field values, rule lines. Built first in 01_FORM_GRID1. This group never moves.</td></tr>
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;width:28%;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);vertical-align:top;padding-top:8px">2. Hero word</td><td style="font-size:8px;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);line-height:1.65">DIRECTIVE only. One word from the 12-word lexicon at 144px+. Never in CUSTODY.</td></tr>
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;width:28%;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);vertical-align:top;padding-top:8px">3. Exhibit</td><td style="font-size:8px;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);line-height:1.65">Desaturated industrial image. 1px INK border, OCR tag, redaction bar. Lives in 02_CONTENT_GRID2.</td></tr>
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;width:28%;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);vertical-align:top;padding-top:8px">4. Stamp</td><td style="font-size:8px;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);line-height:1.65">One primary stamp. The institution's last administrative action on this case.</td></tr>
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;width:28%;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);vertical-align:top;padding-top:8px">5. Barcode + OCR</td><td style="font-size:8px;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);line-height:1.65">Case data encoded. Machine-readable strings at document edges and footer.</td></tr>
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;width:28%;padding:6px 8px;vertical-align:top;padding-top:8px">6. Damage</td><td style="font-size:8px;padding:6px 8px;line-height:1.65">One signature. Implies where the document sits in the institutional chain.</td></tr>
+  </table>
+
+  <div class="kr"><div class="kl">Kill-switch — apply continuously during building</div>After placing any element: does this explain what happened or why? If yes — delete it. Replace with [REDACTED] or PENDING. One explanatory sentence collapses System C into System B. No exceptions.</div>
+
+  <div class="sl">Five colours — these are materials, not a palette</div>
+  <div class="bt" style="font-size:8px;line-height:2.2">
+    <span class="sw" style="background:#E2D9C8"></span>#E2D9C8 — PAPER &nbsp; <span class="sw" style="background:#1C1914"></span>#1C1914 — INK &nbsp; <span class="sw" style="background:#5B6B8A"></span>#5B6B8A — STAMP BLUE<br>
+    <span class="sw" style="background:#B8B0A4"></span>#B8B0A4 — SCAN GREY &nbsp; <span class="sw" style="background:#F0EBE1;border:1px solid #ccc"></span>#F0EBE1 — VOID WHITE
+  </div>
+  <div class="nt">No other colours. No red. No orange. No pure RGB black (#000000). No exceptions.</div>
+
+  <div class="pf"><span class="fo">PLB-BUILD/25/002 // ATT-01</span><span class="fo">PAGE 1</span></div>
+</div>
+
+
+<!-- PAGE 2 — MASTER PSD SETUP -->
+<div class="page">
+  <div class="dh">
+    <span class="dr">PL-BUILD-2025-002 // REV.2</span>
+    <span class="dt">MASTER PSD SETUP — DO ONCE, NEVER REPEAT</span>
+    <span class="dc">PL_GUIDES_MASTER_IG_v1.PSD</span>
+  </div>
+
+  <div class="bt">This page covers the one-time setup of your master file. Once built, this process never repeats. Every session starts by duplicating this file — you never work in the master directly.</div>
+
+  <div class="ph" style="margin-top:0">
+    <div class="pid">SETUP A</div><div class="pn">Canvas + Base Layer</div>
+  </div>
+  <div class="sr"><div class="sn">S.01</div><div class="sa">File → New. Width: 1080px. Height: 1350px. Resolution: 72. Color Mode: RGB 8-bit. Background: Transparent.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">S.02</div><div class="sa">Create a new layer at the absolute bottom of the layer panel. Name it PAPER_BASE. Fill with #E2D9C8. This layer never moves, never changes, and is never placed inside any group. It is the floor of every document you will ever build.</div><div class="sc">☐</div></div>
+
+  <div class="ph"><div class="pid">SETUP B</div><div class="pn">Grid 1 — Layout Guides for Snapping</div></div>
+  <div class="bt">Grid 1 guides are Photoshop cyan guide lines. They exist only for snapping content to position. They are invisible at export and are not drawn as layers.</div>
+  <div class="sr"><div class="sn">S.03</div><div class="sa">View → New Guide Layout. Margins: 72px all sides. Columns: 6, Gutter: 16px. Rows: 12, Gutter: 16px. Click OK. Your layout and snapping grid is in place.</div><div class="sc">☐</div></div>
+
+  <div class="ph"><div class="pid">SETUP C</div><div class="pn">GRID1_VISIBLE — The Gutter=0 Method</div></div>
+  <div class="bt">Drawing lines directly from Grid 1 guides creates doubled lines at every gutter — two guide edges per boundary. The fix: a temporary second guide layout with gutter=0, used only to draw boundary lines cleanly, then discarded.</div>
+  <div class="sr"><div class="sn">S.04</div><div class="sa">View → New Guide Layout again. Same margins (72px). Columns: 6, Gutter: 0. Rows: 12, Gutter: 0. CRITICAL: uncheck "Clear Existing Guides" — your Grid 1 guides must stay. Click OK. You now have two overlapping guide sets: Grid 1 with gutters (snapping) and boundary-only guides (drawing).</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">S.05</div><div class="sa">Create layer group: 00_GUIDES. Inside it, create layer: GRID1_VISIBLE. Set layer opacity 50%.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">S.06</div><div class="sa">Line Tool (U). Mode: Shape. Stroke: 1px. Color: #B8B0A4. Fill: none. View → Snap → Snap to Guides: ON. Draw lines snapping only to the boundary-only (gutter=0) guides. Count exactly: 7 vertical lines (6 columns = 7 boundaries left-to-right) and 13 horizontal lines (12 rows = 13 boundaries top-to-bottom). 20 lines total. No doubles at gutters.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">S.07</div><div class="sa">View → Clear Guides. Then View → New Guide Layout to recreate Grid 1 (margins 72, columns 6 gutter 16, rows 12 gutter 16). GRID1_VISIBLE layer survives. The boundary-only guides are gone. This is the only time you ever do this — the grid is now permanent.</div><div class="sc">☐</div></div>
+  <div class="nt">7 vertical: 6 columns need 7 boundary edges. 13 horizontal: 12 rows need 13 boundary edges. Column boundaries only — not gutter centerlines, not gutter edges.</div>
+
+  <div class="ph"><div class="pid">SETUP D</div><div class="pn">Layer Group Structure — Universal Stack</div></div>
+  <div class="sr"><div class="sn">S.08</div><div class="sa">Create all groups in order, top to bottom. Every template you build starts with this exact stack. If any group is missing before you start — add it first.</div><div class="sc">☐</div></div>
+
+  <div class="lt">
+    <span class="lgh">05_EXPORT_GUIDES</span> <span class="lst">→ toggle OFF at export / carousel crop rectangles live here permanently</span><br>
+    <span class="lgh">04_COLOR_GRADE</span> <span class="lst">→ fixed Curves adjustment layer / set once, never alter</span><br>
+    <span class="lgh">03_DAMAGE</span> <span class="lst">→ one damage signature only / never combined</span><br>
+    <span class="lgh">02_CONTENT_GRID2</span> <span class="lmv">→ THIS GROUP MOVES — nudged by Grid 2 offset every session as one unit</span>
+    <span class="lsb">contains: all type / stamps / barcodes / OCR strings / exhibit IMAGE_SO / exhibit border / exhibit tag / redaction bar / clerk artifact</span>
+    <span class="lgh">01_FORM_GRID1</span> <span class="lst">→ NEVER MOVES — form skeleton stays locked to Grid 1</span>
+    <span class="lsb">contains: rule lines / field separators / table borders / structural boxes only</span>
+    <span class="lgh">00_GUIDES</span> <span class="lst">→ GRID1_VISIBLE layer / toggle OFF at export</span><br>
+    <span class="lgh">PAPER_BASE</span> <span class="lst">→ solid fill #E2D9C8 / absolute bottom / never inside any group</span>
+  </div>
+
+  <div class="sr"><div class="sn">S.09</div><div class="sa">Save as PL_GUIDES_MASTER_IG_v1.psd. This file is never worked in directly. Every session: Image → Duplicate → save with case name → work in duplicate. Master stays clean indefinitely.</div><div class="sc">☐</div></div>
+
+  <div class="cp"><div class="cpl">Why two groups instead of one</div><div class="cpt">Form lines (01_FORM_GRID1) simulate the printed template — they are always in the exact same position. Content (02_CONTENT_GRID2) simulates the human who filled the form in — they never aligned perfectly. The offset between them is institutional realism, not design choice.</div></div>
+
+  <div class="pf"><span class="fo">PLB-BUILD/25/002 // ATT-02</span><span class="fo">PAGE 2</span></div>
+</div>
+
+
+<!-- PAGE 3 — SESSION START -->
+<div class="page">
+  <div class="dh">
+    <span class="dr">PL-BUILD-2025-002 // REV.2</span>
+    <span class="dt">EVERY SESSION STARTS HERE</span>
+    <span class="dc">LOG FIRST / BUILD SECOND</span>
+  </div>
+
+  <div class="kr"><div class="kl">Rule — before opening Photoshop</div>Fill in the session log completely before opening any file. Case number, offset, template pair, posting order, all variables. Decisions made mid-session that should have been made before are the main source of aesthetic drift.</div>
+
+  <div class="sl" style="margin-top:16px">Session log — fill before opening Photoshop</div>
+  <table style="width:100%;border-collapse:collapse;margin:8px 0">
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;width:34%;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);vertical-align:top;white-space:nowrap">Case number</td><td style="font-size:8px;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1)">PL-25-____</td></tr>
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);white-space:nowrap">Date</td><td style="font-size:8px;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1)">&nbsp;</td></tr>
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);white-space:nowrap">Template pair</td><td style="font-size:8px;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1)">C__ + D__</td></tr>
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);white-space:nowrap">Posting order</td><td style="font-size:8px;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1)">C first / D first</td></tr>
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);white-space:nowrap">Grid 2 offset</td><td style="font-size:8px;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1)">X: __ px / Y: __ px — from dice table, never same as last session</td></tr>
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);white-space:nowrap">Lexicon word (D only)</td><td style="font-size:8px;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1)">&nbsp;</td></tr>
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);white-space:nowrap">Primary stamp</td><td style="font-size:8px;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1)">&nbsp;</td></tr>
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);white-space:nowrap">Damage signature</td><td style="font-size:8px;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1)">SIG_A / SIG_B / SIG_C</td></tr>
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);white-space:nowrap">Clerk artifact (C only)</td><td style="font-size:8px;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1)">&nbsp;</td></tr>
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);white-space:nowrap">Kill-switch — line removed</td><td style="font-size:8px;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1)">&nbsp;</td></tr>
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;padding:6px 8px;white-space:nowrap">Anchor 4 — removed</td><td style="font-size:8px;padding:6px 8px">&nbsp;</td></tr>
+  </table>
+
+  <div class="db">
+    <div class="dbt">Grid 2 offset — dice table. Pick X and Y. Never repeat the same pair as last session.</div>
+    <div class="dbg">
+      <div class="dbc"><div class="dbl">Horizontal X</div><div class="dbv">+6 px</div></div>
+      <div class="dbc"><div class="dbl">Horizontal X</div><div class="dbv">+8 px</div></div>
+      <div class="dbc"><div class="dbl">Horizontal X</div><div class="dbv">+10 px</div></div>
+      <div class="dbc"><div class="dbl">Vertical Y</div><div class="dbv">+6 px</div></div>
+      <div class="dbc"><div class="dbl">Vertical Y</div><div class="dbv">+8 px</div></div>
+      <div class="dbc"><div class="dbl">Vertical Y</div><div class="dbv">+10 px</div></div>
+    </div>
+    <div class="nt" style="margin-top:8px">Nine valid combinations: 6/6, 6/8, 6/10, 8/6, 8/8, 8/10, 10/6, 10/8, 10/10. Cycle through them. If you run out of combinations before nine sessions, start again from the beginning.</div>
+  </div>
+
+  <div class="sl">Open your working file</div>
+  <div class="sr"><div class="sn">SESS.01</div><div class="sa">Open PL_GUIDES_MASTER_IG_v1.psd. Image → Duplicate. Name it with case and template: STP_C1_PL250001.psd. Save immediately. You are now working in the duplicate. Master is untouched.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">SESS.02</div><div class="sa">Confirm layer stack: 05_EXPORT_GUIDES / 04_COLOR_GRADE / 03_DAMAGE / 02_CONTENT_GRID2 / 01_FORM_GRID1 / 00_GUIDES / PAPER_BASE. Any group missing — add it before placing anything.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">SESS.03</div><div class="sa">GRID1_VISIBLE: toggled ON. 05_EXPORT_GUIDES: toggled OFF. PL_MATERIALS swatches: loaded.</div><div class="sc">☐</div></div>
+
+  <div class="pf"><span class="fo">PLB-BUILD/25/002 // ATT-03</span><span class="fo">PAGE 3</span></div>
+</div>
+
+
+<!-- PAGE 4 — IMAGE -->
+<div class="page">
+  <div class="dh">
+    <span class="dr">PL-BUILD-2025-002 // REV.2</span>
+    <span class="dt">IMAGE SELECTION + TREATMENT</span>
+    <span class="dc">PREPARE BEFORE OPENING TEMPLATE</span>
+  </div>
+
+  <div class="bt">The image is selected and treated before you open any template file. Never during building. Five minutes maximum. If you cannot find a passing image in five minutes, pull from your image bank. Spending more than five minutes choosing an image is an aesthetic decision — it is not permitted during a session.</div>
+
+  <div class="sl">What works</div>
+  <div class="ib"><div class="il">Corridor / passage</div><div class="it">Institutional corridor, overhead lighting, no people. Identifiable as a specific building type: medical, municipal, industrial. Shot straight-on. Not expressive. Works with: ENTRY, EXIT, GATEWAY, THRESHOLD.</div></div>
+  <div class="ib"><div class="il">Technical infrastructure</div><div class="it">Electrical panels, server racks, junction boxes, cable trays. The density of technical detail makes it illegible at first glance. That illegibility reads as classified. Works with: SIGNAL, STATIC, BREACH.</div></div>
+  <div class="ib"><div class="il">Building facade</div><div class="it">Photographed frontally, dead-on, overcast light. No signage. Concrete or brick. Could be a processing facility, admin annex, storage unit. Anonymous. Becher method. Works with any lexicon word.</div></div>
+  <div class="ib"><div class="il">Object on surface</div><div class="it">A tool, device, or container photographed like evidence — not styled. No depth of field effects. Flat, straight-on, uninflected. Works with: EVIDENCE, WITNESS, PRESSURE.</div></div>
+  <div class="ib"><div class="il">What does not work</div><div class="it">Landscapes. Golden hour. Portraits. Dramatic angles. Anything where the composition was a deliberate aesthetic choice. If it belongs in a photography portfolio — it does not belong here.</div></div>
+
+  <div class="sl">Image test — one question</div>
+  <div class="bt">Does this image function as evidence of something? Or does it function because it looks good? If only the second — find a different image. The viewer must feel the image was photographed for a reason they cannot determine. Not because it is beautiful. Because something happened there.</div>
+
+  <div class="sl">Treatment — exact steps</div>
+  <div class="sr"><div class="sn">IMG.01</div><div class="sa">Open image. Image → Adjustments → Desaturate. Greyscale in RGB mode.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">IMG.02</div><div class="sa">Curves (Cmd+M). Top-right anchor: drag down 5–8px — pulls highlights toward paper tone so image and document exist in the same tonal world. Bottom-left anchor: drag up 3–5px — lifts shadows off pure black to match INK value. Small moves. The image should feel processed and flattened, not dramatically filtered.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">IMG.03</div><div class="sa">Export as TIFF: PL_25_0001_IMG_01.tif. Place Embed this into both C and D templates as a Smart Object. One treated source image per case — same source, different crop and redaction in each document.</div><div class="sc">☐</div></div>
+
+  <div class="sl">Image bank</div>
+  <div class="bt">Maintain folder PL_REFS/IMAGES with at least ten pre-selected images ready to use. When no image passes the test in five minutes — pull from here. Build the bank outside of session time, never during building. Add to it when you find good sources, not when you need them.</div>
+
+  <div class="cp"><div class="cpl">Illustrator note</div><div class="cpt">Illustrator is for structural elements only if you prefer vector rule lines or form boxes. Any Illustrator elements must be placed into the Photoshop PSD as Smart Objects into the correct layer group (01_FORM_GRID1 for structural elements, 02_CONTENT_GRID2 for content). The layer group logic does not change.</div></div>
+
+  <div class="pf"><span class="fo">PLB-BUILD/25/002 // ATT-04</span><span class="fo">PAGE 4</span></div>
+</div>
+
+
+<!-- PAGE 5 — BUILDING C1 -->
+<div class="page">
+  <div class="dh">
+    <span class="dr">PL-BUILD-2025-002 // REV.2</span>
+    <span class="dt">BUILDING THE CUSTODY DOCUMENT — C1</span>
+    <span class="dc">FORM FIRST / CONTENT SECOND / OFFSET THIRD</span>
+  </div>
+
+  <div class="tc" style="align-items:start;margin-bottom:16px">
+    <div>
+      <div class="sl" style="margin-top:0">C1 target layout</div>
+      <div class="mk">
+        <div class="mkh">INTAKE DOCUMENT — CLASSIFICATION PENDING</div>
+        <div class="mkr"></div>
+        <div class="mkf"><span class="mkfl">CASE NO.</span><span class="mkfr">—</span></div>
+        <div class="mkf"><span class="mkfl">DATE</span><span class="mkfr">—</span></div>
+        <div class="mkf"><span class="mkfl">CLASSIFICATION</span><span class="mkfr">—</span></div>
+        <div class="mkr"></div>
+        <div class="mki">EXHIBIT 01 — IMAGE_SO</div>
+        <div class="mkrd"></div>
+        <div style="font-size:6px;color:var(--accent);letter-spacing:.1em;margin:3px 0">EXHIBIT 01 // REF: PL-25-0001-C</div>
+        <div class="mkf"><span class="mkfl">STATUS</span><span class="mkfr fi">PENDING REVIEW</span></div>
+        <div class="mkf"><span class="mkfl">HANDLER</span><span class="mkfr">—</span></div>
+        <div class="mkf"><span class="mkfl">RECEIVED BY</span><span class="mkfr">—</span></div>
+        <div class="mkf"><span class="mkfl">PRIORITY</span><span class="mkfr fi">UNASSIGNED</span></div>
+        <div class="mkf"><span class="mkfl">ORIGIN</span><span class="mkfr">—</span></div>
+        <div style="margin-top:5px"><div class="mks">RECEIVED — UNCLASSIFIED</div></div>
+        <div style="font-size:8px;color:var(--ink);margin:3px 0;font-family:'Courier New'">|||||||||||||||||||||||||</div>
+        <div style="font-size:6px;color:var(--accent);letter-spacing:.1em">PLB-IN/25/0001 // ATT-01 // HASH:[REDACTED]</div>
+      </div>
+    </div>
+    <div>
+      <div class="sl" style="margin-top:0">Which layer receives what</div>
+      <div class="lt">
+        <span class="lgh">01_FORM_GRID1</span> <span class="lst">NEVER MOVES</span>
+        <span class="lsb">— 2px top rule line</span>
+        <span class="lsb">— field separator lines</span>
+        <span class="lsb">— structural boxes / table outlines</span>
+        <span class="lgh" style="margin-top:10px;display:block">02_CONTENT_GRID2</span> <span class="lmv">MOVES AS ONE UNIT</span>
+        <span class="lsb">— header text (DIN_HEADER)</span>
+        <span class="lsb">— all field labels (DIN_LABEL)</span>
+        <span class="lsb">— all field values (DIN_BODY)</span>
+        <span class="lsb">— IMAGE_SO (exhibit smart object)</span>
+        <span class="lsb">— exhibit border (1px INK rect)</span>
+        <span class="lsb">— exhibit tag (OCR_LINE below image)</span>
+        <span class="lsb">— redaction bar (VOID WHITE rect)</span>
+        <span class="lsb">— stamp + border (Multiply 90%)</span>
+        <span class="lsb">— barcode (Libre Barcode 128)</span>
+        <span class="lsb">— OCR footer string</span>
+        <span class="lsb">— clerk artifact</span>
+      </div>
+      <div class="nt" style="margin-top:6px">The form lines stay locked on Grid 1. The content drifts by your logged offset. This is the misalignment of a real form filled by a real human — not a design decision.</div>
+    </div>
+  </div>
+
+  <div class="sl">Build steps — exact order</div>
+  <div class="sr"><div class="sn">C1.01</div><div class="sa">Work in 01_FORM_GRID1 first. Draw the 2px top rule line. Draw field separator lines (1px #1C1914 for primary, 0.5px #B8B0A4 for secondary). Draw any structural boxes or table outlines. Snap everything to Grid 1 guides. Lock this group when done. Do not touch it again this session.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">C1.02</div><div class="sa">Switch to 02_CONTENT_GRID2. Header text: D-DIN Bold, 20px, tracking +40, ALL CAPS, #1C1914. Text: INTAKE DOCUMENT — CLASSIFICATION PENDING. Left-aligned to the 72px margin.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">C1.03</div><div class="sa">Three primary fields: CASE NO. / DATE / CLASSIFICATION. Labels in DIN_LABEL (16px, tracking +20, ALL CAPS, #5B6B8A). Leave all three values completely blank — the separator line from 01_FORM_GRID1 is there, no value text at all.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">C1.04</div><div class="sa">Six field labels in right column or lower zone. Fill two maximum with values in DIN_BODY (16px, tracking +10, sentence case, #1C1914). At least two must have absolutely no value — not a dash, not a dot, nothing. STATUS → PENDING REVIEW / HANDLER → blank / RECEIVED BY → blank / PRIORITY → UNASSIGNED / ORIGIN → blank / REVIEWED BY → blank.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">C1.05</div><div class="sa">File → Place Embedded → your TIFF. Scale to exhibit zone. Add 1px #1C1914 rectangle outline as exhibit border, 4px inset (no fill). Below image: OCR_LINE text — EXHIBIT 01 // REF: PL-25-0001-C (OCR-B, 12px, tracking +80, #5B6B8A). Draw #F0EBE1 filled rectangle over top 25–30% of image as redaction bar.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">C1.06</div><div class="sa">Clerk artifact: mis-type one field label — example: CLASSIFCATION. Place a narrow #F0EBE1 bar over it. Retype correctly beside or below it. Correction must be visible. Log which artifact you used.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">C1.07</div><div class="sa">Barcode: type PL250001C in Libre Barcode 128 font, #1C1914. Approximately half-canvas width. Place in lower third of document.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">C1.08</div><div class="sa">Stamp: RECEIVED — UNCLASSIFIED in DIN_HEADER, #5B6B8A. Add rectangle border same colour 1.5px stroke no fill. Group text + border. Rotate -3°. Blend mode Multiply, opacity 90%.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">C1.09</div><div class="sa">OCR footer: 30px from bottom edge, left margin. OCR-B, 12px, tracking +80, #5B6B8A. Text: PLB-IN/25/0001 // ATT-01 // HASH:[REDACTED]</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">C1.10</div><div class="sa">Grid 2 offset: click the 02_CONTENT_GRID2 group in the layers panel. Move Tool (V), Auto-Select OFF. Press → arrow key X times (your logged X value). Press ↓ arrow key Y times (your logged Y value). Example X+8/Y+10: right 8×, down 10×. Check that 01_FORM_GRID1 did not move. That group stays locked.</div><div class="sc">☐</div></div>
+
+  <div class="pf"><span class="fo">PLB-BUILD/25/002 // ATT-05</span><span class="fo">PAGE 5</span></div>
+</div>
+
+
+<!-- PAGE 6 — DAMAGE / KILL-SWITCH / CAROUSEL / EXPORT -->
+<div class="page">
+  <div class="dh">
+    <span class="dr">PL-BUILD-2025-002 // REV.2</span>
+    <span class="dt">DAMAGE / KILL-SWITCH / CAROUSEL / EXPORT</span>
+    <span class="dc">APPLIES TO BOTH C AND D DOCUMENTS</span>
+  </div>
+
+  <div class="sl" style="margin-top:0">Damage — one signature per document, never combined</div>
+  <table style="width:100%;border-collapse:collapse;margin:8px 0">
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;width:22%;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);vertical-align:top;padding-top:8px;white-space:nowrap">SIG_A<br>Thermal fade</td><td style="font-size:8px;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);line-height:1.65">Gradient map layer, Soft Light blend, irregular brush mask (not a linear gradient), 40–60% opacity. Highlights pull toward #E2D9C8. Implies: disposable output, receipt printer. The institution did not expect this document to last.</td></tr>
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;width:22%;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);vertical-align:top;padding-top:8px;white-space:nowrap">SIG_B<br>Generation loss</td><td style="font-size:8px;padding:6px 8px;border-bottom:1px solid rgba(28,25,20,.1);line-height:1.65">New blank layer in 03_DAMAGE. Filter → Noise → Add Noise. Gaussian, Monochromatic, 2–4%. Set to Soft Light blend, 20% opacity. Implies: copied and recopied, original is elsewhere. Use for your first three cases.</td></tr>
+    <tr><td style="font-size:7px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;width:22%;padding:6px 8px;vertical-align:top;padding-top:8px;white-space:nowrap">SIG_C<br>Physical single</td><td style="font-size:8px;padding:6px 8px;line-height:1.65">High-res scan of fold crease or torn edge, placed as Smart Object, Multiply blend, masked to document boundary. Must read as something that happened to this document. When SIG_C is active, nothing else runs in 03_DAMAGE.</td></tr>
+  </table>
+  <div class="sr"><div class="sn">DMG.01</div><div class="sa">Apply your logged damage signature in 03_DAMAGE. On/off toggle test: difference must be perceptible but not dramatic. Dramatic → reduce opacity. Invisible → increase until just perceptible.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">DMG.02</div><div class="sa">Same damage signature on both C and D for the same case. Same institutional chain position.</div><div class="sc">☐</div></div>
+
+  <hr>
+
+  <div class="sl">Kill-switch + anchor test — before any export</div>
+  <div class="sr"><div class="sn">KA.01</div><div class="sa">Kill-switch: read every text element in the document. Does any line explain what happened or why the case was opened? Delete it. Replace with [REDACTED] or PENDING. Log what was removed.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">KA.02</div><div class="sa">Anchor 1 — System weight: does it feel like one page of many files, not a complete object?</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">KA.03</div><div class="sa">Anchor 2 — Temperature: administratively cold. The temperature of a filing cabinet nobody has opened in three years. Not stylishly cold — bureaucratically cold.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">KA.04</div><div class="sa">Anchor 4 — No aesthetics: identify one element that exists for visual reasons only. Remove it. Not reduce. Remove. Log what was removed.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">KA.05</div><div class="sa">If the document still looks designed after all of the above — remove one more element. This standing order supersedes every other rule.</div><div class="sc">☐</div></div>
+
+  <hr>
+
+  <div class="sl">Carousel — crop guides + export four slides</div>
+  <div class="bt">One canvas. No artboards. Carousel crops are labelled rectangle shapes inside 05_EXPORT_GUIDES. Build them once per template — they stay in the file permanently and are reused every session. Toggle them off before export.</div>
+  <div class="sr"><div class="sn">CAR.01</div><div class="sa">Toggle ON 05_EXPORT_GUIDES. Inside this group, draw three labelled rectangle outlines in a visible colour (bright stroke only, no fill): CROP_S2_HEADER (header + stamp zone), CROP_S3_EXHIBIT (tight around image + exhibit tag), CROP_S4_MACHINE (barcode + OCR footer zone). These are permanent — build once, reuse every session.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">CAR.02</div><div class="sa">SLIDE 1 — full document: toggle OFF 05_EXPORT_GUIDES and 00_GUIDES. File → Export As. JPG quality 85%. Name: PL_25_0001_C_S1.jpg. This is the feed view — what the viewer decides to swipe from.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">CAR.03</div><div class="sa">SLIDE 2 — header crop: use CROP_S2_HEADER zone as reference. Square output. Field labels and stamp readable for the first time up close. Name: PL_25_0001_C_S2.jpg.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">CAR.04</div><div class="sa">SLIDE 3 — exhibit crop: CROP_S3_EXHIBIT zone. Exhibit border visible. Tag visible. Redaction bar in frame. Name: PL_25_0001_C_S3.jpg.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">CAR.05</div><div class="sa">SLIDE 4 — machine layer: CROP_S4_MACHINE zone. Barcode, OCR string, any secondary stamps. The administrative residue most viewers will never read. Name: PL_25_0001_C_S4.jpg.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">CAR.06</div><div class="sa">AirDrop all four slides to phone. Does the document reveal more as you go deeper into the carousel? If Slide 4 has nothing worth seeing — your machine layer is too thin. Add more OCR content or barcode detail before the next session.</div><div class="sc">☐</div></div>
+
+  <div class="pf"><span class="fo">PLB-BUILD/25/002 // ATT-06</span><span class="fo">PAGE 6</span></div>
+</div>
+
+
+<!-- PAGE 7 — DIRECTIVE + PAIRING + POSTING -->
+<div class="page">
+  <div class="dh">
+    <span class="dr">PL-BUILD-2025-002 // REV.2</span>
+    <span class="dt">DIRECTIVE DOCUMENT — D1</span>
+    <span class="dc">SAME LOGIC AS C1 / TWO DIFFERENCES</span>
+  </div>
+
+  <div class="bt">Duplicate the master again. Save as STP_D1_PL250001.psd. Same full layer stack. Apply the same Grid 2 offset as C1 — same case, same pair. All content in 02_CONTENT_GRID2, all form structure in 01_FORM_GRID1.</div>
+
+  <div class="tc" style="align-items:start;margin-bottom:14px">
+    <div>
+      <div class="sl" style="margin-top:0">D1 target layout</div>
+      <div class="mk">
+        <div class="mkh">CLASSIFICATION DIRECTIVE — PL-25-0001-D</div>
+        <div class="mkr"></div>
+        <div class="mkf"><span class="mkfl">REF</span><span class="mkfr fi">PL-25-0001</span></div>
+        <div class="mkf"><span class="mkfl">DATE</span><span class="mkfr">—</span></div>
+        <div class="mkf"><span class="mkfl">ISSUED BY</span><span class="mkfr">—</span></div>
+        <div class="mkr"></div>
+        <div class="mkhr">BREACH</div>
+        <div class="mkr"></div>
+        <div class="mki" style="height:46px">EXHIBIT 01 — TIGHTER CROP</div>
+        <div class="mkrd" style="width:70%"></div>
+        <div class="mkf" style="margin-top:4px"><span class="mkfl">STATUS</span><span class="mkfr fi">HOLD — REVIEW PENDING</span></div>
+        <div class="mkf"><span class="mkfl">AUTHORITY</span><span class="mkfr">—</span></div>
+        <div style="margin-top:4px"><div class="mks">HOLD — REVIEW PENDING</div></div>
+        <div style="font-size:7px;color:var(--ink);margin:3px 0;font-family:'Courier New'">|||||||||||||||||||||||||</div>
+        <div style="font-size:6px;color:var(--accent);letter-spacing:.1em">PLB-IN/25/0001 // ATT-01 // HASH:[REDACTED]</div>
+      </div>
+    </div>
+    <div>
+      <div class="sl" style="margin-top:0">The two differences from C1</div>
+      <div class="bt" style="font-size:8px;line-height:1.85;margin-bottom:14px"><span style="color:var(--accent);letter-spacing:.12em;font-size:7px">DIFFERENCE 1:</span> Hero word. DIN 1451 LT Pro Engschrift, 144px minimum, tracking +5, ALL CAPS, #1C1914. Left-aligned to margin. Administrative content both above and below it — cover the word with your thumb. If the document collapses, add more field content before continuing. The hero word names a classification. It does not describe what happened.<br><br><span style="color:var(--accent);letter-spacing:.12em;font-size:7px">DIFFERENCE 2:</span> No clerk artifact. Clerk artifacts are CUSTODY only.</div>
+      <div class="sl">12-word lexicon</div>
+      <div class="lex">
+        <div class="lw">GATEWAY</div><div class="lw">THRESHOLD</div>
+        <div class="lw">ENTRY</div><div class="lw">EXIT</div>
+        <div class="lw">LEAK</div><div class="lw">BREACH</div>
+        <div class="lw">SIGNAL</div><div class="lw">STATIC</div>
+        <div class="lw">PRESSURE</div><div class="lw">WITNESS</div>
+        <div class="lw">EVIDENCE</div><div class="lw">HOLD</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sl">D1 build steps</div>
+  <div class="sr"><div class="sn">D1.01</div><div class="sa">01_FORM_GRID1: structural rule lines and any form boxes. Lock it.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">D1.02</div><div class="sa">02_CONTENT_GRID2: header (CLASSIFICATION DIRECTIVE — PL-25-0001-D), admin fields (REF filled with PL-25-0001, DATE and ISSUED BY blank), hero word at 144px+, same treated image but tighter crop and more aggressive redaction (top 40–50%), exhibit border and tag, stamp (HOLD — REVIEW PENDING), barcode (PL250001D), OCR footer.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">D1.03</div><div class="sa">Apply same Grid 2 offset to 02_CONTENT_GRID2 as you used for C1 this session.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">D1.04</div><div class="sa">Same damage signature as C1. Kill-switch. Anchor test. Log removals. Export all four slides named D_S1 through D_S4.</div><div class="sc">☐</div></div>
+
+  <hr>
+
+  <div class="sl">Pairing check + posting</div>
+  <div class="sr"><div class="sn">PR.01</div><div class="sa">C1 and D1 Slide 1 side by side. Same institution, different departments — related but not identical. Case number PL-25-0001 visible in OCR footer of both. Same image world. Neither document explains the other. Together they raise more questions, not fewer.</div><div class="sc">☐</div></div>
+  <div class="sr"><div class="sn">PR.02</div><div class="sa">Post in logged order. Minimum 4 hours gap between posts. No explanatory caption — case string only or nothing at all. Carousel order always S1 first, then S2, S3, S4. Never a detail crop first.</div><div class="sc">☐</div></div>
+
+  <div class="pf"><span class="fo">PLB-BUILD/25/002 // ATT-07</span><span class="fo">PAGE 7</span></div>
+</div>
+
+
+<!-- PAGE 8 — CASE SCENARIOS + STANDING RULES -->
+<div class="page">
+  <div class="dh">
+    <span class="dr">PL-BUILD-2025-002 // REV.2</span>
+    <span class="dt">CASE SCENARIOS + STANDING RULES</span>
+    <span class="dc">INSPIRATION + PERMANENT REFERENCE</span>
+  </div>
+
+  <div class="sl" style="margin-top:0">Six case scenarios — content direction</div>
+  <div class="tc">
+    <div>
+      <div class="ib" style="margin-top:0"><div class="il">Access event</div><div class="it" style="font-size:7.5px">Image: security door or barrier, straight-on. Hero: ENTRY or GATEWAY. Stamp: DENIED — INSUFFICIENT DISCLOSURE. Field ACCESS LEVEL → blank. The institution could not determine authorisation level.</div></div>
+      <div class="ib"><div class="il">Infrastructure record</div><div class="it" style="font-size:7.5px">Image: wire panel, server rack, junction box. Hero: SIGNAL or STATIC. Stamp: MANUAL REVIEW REQUIRED. Field TRANSMISSION STATUS → blank. Institution received something it could not classify.</div></div>
+      <div class="ib"><div class="il">Perimeter breach</div><div class="it" style="font-size:7.5px">Image: fence, wall, concrete barrier. Hero: BREACH or THRESHOLD. Stamp: SEIZURE ORDER ACTIVE. C2 chain of custody table: four rows, two with blank recipients. Case escalated but nothing was resolved.</div></div>
+    </div>
+    <div>
+      <div class="ib" style="margin-top:0"><div class="il">Evidence intake</div><div class="it" style="font-size:7.5px">Image: object on surface — tool, device, container. Hero: EVIDENCE or WITNESS. Three exhibit tags in C1 (EXHIBIT 01, 02, 03) but only the first image is present. The other two exhibits are referenced but absent.</div></div>
+      <div class="ib"><div class="il">Pressure reading</div><div class="it" style="font-size:7.5px">Image: gauge, meter, measurement instrument. Hero: PRESSURE or STATIC. Stamp: NO FURTHER ACTION with blank DATE field. Decision made, never timestamped. The institution closed the case without closing it.</div></div>
+      <div class="ib"><div class="il">Exit protocol</div><div class="it" style="font-size:7.5px">Image: corridor end, emergency exit, stairwell bottom. Hero: EXIT or LEAK. D2 format — no hero word, boxed directive instead: ACCESS TO THIS RECORD HAS BEEN SUSPENDED. No reason. No duration.</div></div>
+    </div>
+  </div>
+
+  <div class="sl">Standing rules — no exceptions</div>
+  <div style="font-size:8.5px;letter-spacing:.04em;line-height:2.15">
+    <span style="color:var(--accent);font-size:6.5px;letter-spacing:.18em">R.01</span>&emsp;If it looks designed, remove one element. This supersedes every other rule.<br>
+    <span style="color:var(--accent);font-size:6.5px;letter-spacing:.18em">R.02</span>&emsp;CUSTODY before DIRECTIVE. Every session without exception.<br>
+    <span style="color:var(--accent);font-size:6.5px;letter-spacing:.18em">R.03</span>&emsp;One damage signature per document. Never combined.<br>
+    <span style="color:var(--accent);font-size:6.5px;letter-spacing:.18em">R.04</span>&emsp;One primary stamp per document. Two secondary maximum.<br>
+    <span style="color:var(--accent);font-size:6.5px;letter-spacing:.18em">R.05</span>&emsp;PARADISE in file strings only. Never as readable text anywhere in the document.<br>
+    <span style="color:var(--accent);font-size:6.5px;letter-spacing:.18em">R.06</span>&emsp;Minimum two blank fields per CUSTODY document.<br>
+    <span style="color:var(--accent);font-size:6.5px;letter-spacing:.18em">R.07</span>&emsp;OCR never larger than DIN_LABEL in the same layout.<br>
+    <span style="color:var(--accent);font-size:6.5px;letter-spacing:.18em">R.08</span>&emsp;Five colours only. No red. No orange. No pure RGB black (#000000).<br>
+    <span style="color:var(--accent);font-size:6.5px;letter-spacing:.18em">R.09</span>&emsp;Image must function as evidence. If only atmosphere — find another image.<br>
+    <span style="color:var(--accent);font-size:6.5px;letter-spacing:.18em">R.10</span>&emsp;Log every session before opening Photoshop.<br>
+    <span style="color:var(--accent);font-size:6.5px;letter-spacing:.18em">R.11</span>&emsp;One clerk artifact per CUSTODY document. Logged every session.<br>
+    <span style="color:var(--accent);font-size:6.5px;letter-spacing:.18em">R.12</span>&emsp;Kill-switch before every export. One explanatory line = System B. Remove it.<br>
+    <span style="color:var(--accent);font-size:6.5px;letter-spacing:.18em">R.13</span>&emsp;02_CONTENT_GRID2 is the only group that moves. 01_FORM_GRID1 never moves.<br>
+    <span style="color:var(--accent);font-size:6.5px;letter-spacing:.18em">R.14</span>&emsp;No artboards. One canvas. Carousel crops as layer rectangles in 05_EXPORT_GUIDES only.
+  </div>
+
+  <div style="margin-top:20px"><div class="stmp">BUILD GUIDE v2 — APPROVED FOR USE</div></div>
+
+  <div class="pf"><span class="fo">PLB-BUILD/25/002 // ATT-08 // FINAL PAGE</span><span class="fo">PAGE 8</span></div>
+</div>
+
+</body>
+</html>

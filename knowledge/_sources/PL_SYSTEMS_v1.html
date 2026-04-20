@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PL_SYSTEMS_v1</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+  :root { --paper:#E2D9C8; --ink:#1C1914; --accent:#5B6B8A; --void:#F0EBE1; --scan:#B8B0A4; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#1A1A1A; display:flex; flex-direction:column; align-items:center; padding:40px 20px; gap:48px; font-family:'Share Tech Mono','Courier New',monospace; }
+  .page { background:var(--paper); width:794px; min-height:1123px; padding:52px 60px 88px; position:relative; color:var(--ink); box-shadow:5px 5px 24px rgba(0,0,0,0.55); }
+  .page::before { content:''; position:absolute; left:0; top:0; bottom:0; width:7px; background:linear-gradient(to right,rgba(0,0,0,0.13),transparent); pointer-events:none; }
+  .doc-header { border-top:2px solid var(--ink); border-bottom:1px solid var(--ink); padding:6px 0; display:flex; justify-content:space-between; align-items:baseline; margin-bottom:36px; }
+  .doc-ref { font-size:7px; letter-spacing:.18em; color:var(--accent); text-transform:uppercase; }
+  .doc-title { font-size:7px; letter-spacing:.25em; text-transform:uppercase; }
+  .doc-copy { font-size:7px; letter-spacing:.12em; color:var(--scan); }
+  .section-label { font-size:7px; letter-spacing:.28em; color:var(--accent); text-transform:uppercase; border-bottom:1px solid var(--scan); padding-bottom:4px; margin-bottom:14px; margin-top:24px; }
+  .body-text { font-size:8.5px; letter-spacing:.04em; line-height:1.75; margin-bottom:10px; }
+  .rule { font-size:9px; letter-spacing:.05em; line-height:1.75; color:var(--ink); margin-bottom:4px; }
+  .rule-id { font-size:7px; color:var(--accent); letter-spacing:.18em; margin-right:8px; }
+  table.spec { width:100%; border-collapse:collapse; margin:8px 0; }
+  table.spec td { font-size:8px; letter-spacing:.05em; padding:6px 8px; vertical-align:top; border-bottom:1px solid rgba(28,25,20,0.1); line-height:1.65; }
+  table.spec td:first-child { color:var(--accent); letter-spacing:.15em; text-transform:uppercase; font-size:7px; width:28%; white-space:nowrap; padding-top:8px; }
+  table.spec tr:last-child td { border-bottom:none; }
+  .system-block { border:1px solid rgba(28,25,20,0.2); margin-bottom:16px; }
+  .system-header { padding:10px 14px; border-bottom:1px solid rgba(28,25,20,0.15); display:flex; align-items:baseline; gap:14px; }
+  .system-id { font-size:7px; letter-spacing:.25em; color:var(--accent); border:1px solid var(--accent); padding:3px 8px; text-transform:uppercase; white-space:nowrap; }
+  .system-name { font-size:11px; letter-spacing:.06em; text-transform:uppercase; }
+  .system-verdict { font-size:7px; letter-spacing:.15em; color:var(--scan); margin-left:auto; }
+  .system-body { padding:12px 14px; }
+  .kill-rule { background:var(--ink); color:var(--paper); padding:12px 16px; margin:16px 0; font-size:8.5px; letter-spacing:.06em; line-height:1.8; }
+  .kill-label { font-size:7px; letter-spacing:.22em; margin-bottom:6px; opacity:.7; text-transform:uppercase; }
+  .example-block { border-left:3px solid var(--scan); padding:8px 14px; margin:10px 0; }
+  .example-label { font-size:7px; letter-spacing:.2em; color:var(--accent); text-transform:uppercase; margin-bottom:6px; }
+  .example-text { font-size:8px; letter-spacing:.04em; line-height:1.7; }
+  .wrong { border-left-color:var(--ink); }
+  .wrong .example-label { color:var(--ink); }
+  .right { border-left-color:var(--accent); }
+  .check-row { display:flex; gap:0; border-bottom:1px solid rgba(28,25,20,0.1); min-height:32px; }
+  .check-q { font-size:8px; letter-spacing:.04em; padding:8px 12px; flex:1; line-height:1.55; }
+  .check-ans { font-size:7px; letter-spacing:.12em; color:var(--accent); padding:9px 10px; border-left:1px solid rgba(28,25,20,0.12); min-width:80px; text-align:right; white-space:nowrap; }
+  .addendum { border:1px solid var(--ink); padding:12px 16px; margin:14px 0; }
+  .addendum-label { font-size:7px; letter-spacing:.22em; color:var(--accent); text-transform:uppercase; margin-bottom:8px; }
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .col-label { font-size:7px; letter-spacing:.18em; color:var(--ink); text-transform:uppercase; margin-bottom:6px; border-bottom:1px solid rgba(28,25,20,0.15); padding-bottom:4px; }
+  .col-item { font-size:8px; letter-spacing:.04em; line-height:1.8; }
+  .col-item.banned { color:rgba(28,25,20,0.45); }
+  hr { border:none; border-top:1px solid rgba(28,25,20,0.13); margin:22px 0; }
+  .page-footer { position:absolute; bottom:30px; left:60px; right:60px; border-top:1px solid var(--scan); padding-top:6px; display:flex; justify-content:space-between; }
+  .footer-ocr { font-size:6px; letter-spacing:.18em; color:var(--scan); text-transform:uppercase; }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 — OVERVIEW + PURPOSE -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-ref">PL-SYS-2025-001 // REV.1</span>
+    <span class="doc-title">PARADISE LOBBY — SYSTEM CLASSIFICATION</span>
+    <span class="doc-copy">NOT FOR DAILY USE — REFERENCE ONLY</span>
+  </div>
+
+  <div class="section-label" style="margin-top:0;">Purpose</div>
+  <div class="body-text">This document defines the three system classifications used to evaluate Paradise Lobby output. Systems A and B define what the project is not. System C defines what it is. The classification is a content and tone filter — it is applied during building and again at the anchor test before export.</div>
+  <div class="body-text">When a document feels wrong during production and you cannot identify why, it is almost always because one element has drifted into System A or System B. This document gives you the vocabulary to find it.</div>
+
+  <div class="section-label">The core principle — stated once, never repeated</div>
+  <div class="kill-rule">
+    <div class="kill-label">Foundation</div>
+    The institution processes things it cannot classify. The documents are the residue of that processing — not the record of it, not the announcement of it. The institution does not know you have these pages. The institution may not fully understand what it processed.
+  </div>
+
+  <div class="section-label">Three systems — summary</div>
+  <table class="spec">
+    <tr><td>System A</td><td>EVENT — the document creates or announces something. Points forward in time. Something is happening or will happen.</td></tr>
+    <tr><td>System B</td><td>RECORD — the document describes something that happened. Points backward. A coherent reconstruction of events is possible from the content.</td></tr>
+    <tr><td>System C</td><td>RESIDUE — the document is the administrative trace of a process. Points nowhere. Reconstruction fails. The institution processed something it could not resolve.</td></tr>
+  </table>
+
+  <div class="section-label">Which system Paradise Lobby operates in</div>
+  <div class="rule"><span class="rule-id">R-SYS-01</span>Paradise Lobby operates exclusively in System C. Always.</div>
+  <div class="rule" style="margin-top:4px;"><span class="rule-id">R-SYS-02</span>Systems A and B are defined so you can recognise drift, not because you will intentionally use them.</div>
+  <div class="rule" style="margin-top:4px;"><span class="rule-id">R-SYS-03</span>A single line of System A or B content in an otherwise correct document invalidates the document. Find it and remove it.</div>
+
+  <div class="section-label">The drift detection check — run this when something feels wrong</div>
+  <div class="check-row">
+    <div class="check-q">Does any part of the document announce, invite, or point toward a future event or outcome?</div>
+    <div class="check-ans">YES → SYSTEM A<br>Remove it.</div>
+  </div>
+  <div class="check-row">
+    <div class="check-q">Can a viewer reconstruct a coherent sequence of events from the document's content — even partially?</div>
+    <div class="check-ans">YES → SYSTEM B<br>Remove it.</div>
+  </div>
+  <div class="check-row">
+    <div class="check-q">Are the viewer's questions multiplying rather than resolving as they read the document?</div>
+    <div class="check-ans">YES → SYSTEM C<br>Correct.</div>
+  </div>
+
+  <div class="page-footer">
+    <span class="footer-ocr">PLB-SYS/25/001 // ATT-01</span>
+    <span class="footer-ocr">PAGE 1</span>
+  </div>
+</div>
+
+
+<!-- PAGE 2 — SYSTEM A -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-ref">PL-SYS-2025-001 // REV.1</span>
+    <span class="doc-title">SYSTEM A — EVENT</span>
+    <span class="doc-copy">NOT FOR DAILY USE</span>
+  </div>
+
+  <div class="system-block">
+    <div class="system-header">
+      <div class="system-id">SYS A</div>
+      <div class="system-name">Event</div>
+      <div class="system-verdict">BANNED — DO NOT PRODUCE</div>
+    </div>
+    <div class="system-body">
+      <div class="body-text">A document that creates or announces something. It points forward in time. The viewer is being informed that something is happening or will happen. The institution has a role to play — it is acting, communicating, inviting.</div>
+    </div>
+  </div>
+
+  <div class="section-label">What System A feels like</div>
+  <div class="body-text">Anticipation. Something is coming. The document exists to prepare the viewer for an event. The institution is performing — it wants to be seen doing something.</div>
+
+  <div class="section-label">Real-world examples of System A</div>
+  <div class="body-text">Concert poster. Press release. Product launch. Invitation. Campaign announcement. Any document whose purpose is to cause something to happen in the future.</div>
+
+  <div class="section-label">System A contamination in bureaucratic forms — what to watch for</div>
+  <table class="spec">
+    <tr><td>Timelines</td><td>"Assessment will be completed within 30 days." — This promises a future outcome. System A.</td></tr>
+    <tr><td>Commitments</td><td>"A full review will follow." — This commits the institution to a future action. System A.</td></tr>
+    <tr><td>Invitations</td><td>"You are requested to attend." — This addresses the viewer and involves them in an event. System A.</td></tr>
+    <tr><td>We will language</td><td>Any sentence beginning with "We will…" or "The institution will…" — System A.</td></tr>
+    <tr><td>Announcements</td><td>"Notice of Documentation: the submitted image has been accepted for review." — This announces an outcome. System A.</td></tr>
+  </table>
+
+  <div class="section-label">Examples — same subject, System A vs System C</div>
+  <div class="example-block wrong">
+    <div class="example-label">SYSTEM A — wrong</div>
+    <div class="example-text">NOTICE OF DOCUMENTATION<br>The submitted image has been accepted for review. A full assessment will be completed within 30 days. You will be notified of the outcome.</div>
+  </div>
+  <div class="example-block right">
+    <div class="example-label">SYSTEM C — correct</div>
+    <div class="example-text">INTAKE DOCUMENT — CLASSIFICATION PENDING<br>CASE NO.        PL-25-0001<br>DATE            [blank]<br>STATUS          PENDING REVIEW<br>HANDLER         [blank]</div>
+  </div>
+
+  <div class="section-label">Why Paradise Lobby avoids System A</div>
+  <div class="body-text">System A requires a narrative — a before and an after. It gives the viewer a role: witness to something about to happen. The institution performs for the viewer. Paradise Lobby's institution does not perform. It processes cases without awareness of being observed, without communicating to an outside audience, without building toward events. An institution that announces things is comprehensible. Paradise Lobby's institution is not.</div>
+
+  <div class="section-label">The key distinction — status vs event</div>
+  <div class="addendum">
+    <div class="addendum-label">Status vs Event — critical</div>
+    <div class="two-col">
+      <div>
+        <div class="col-label">Status — allowed in System C</div>
+        <div class="col-item">PENDING REVIEW</div>
+        <div class="col-item">ON HOLD</div>
+        <div class="col-item">SUSPENDED</div>
+        <div class="col-item">UNASSIGNED</div>
+        <div class="col-item">ROUTED</div>
+        <div class="col-item">RETURNED</div>
+        <div class="col-item">HOLD — REVIEW PENDING</div>
+        <div class="col-item">CLASSIFICATION: PENDING</div>
+      </div>
+      <div>
+        <div class="col-label">Event language — banned</div>
+        <div class="col-item banned">will be completed within 30 days</div>
+        <div class="col-item banned">assessment follows</div>
+        <div class="col-item banned">you are invited to</div>
+        <div class="col-item banned">we will notify you</div>
+        <div class="col-item banned">next steps include</div>
+        <div class="col-item banned">outcome pending notification</div>
+        <div class="col-item banned">review commences [date]</div>
+      </div>
+    </div>
+    <div class="body-text" style="margin-top:10px; font-size:7.5px;">Rule: administrative status is allowed if it implies indefinite continuation without resolution. It is banned if it implies a specific future action, deadline, or outcome.</div>
+  </div>
+
+  <div class="page-footer">
+    <span class="footer-ocr">PLB-SYS/25/001 // ATT-02</span>
+    <span class="footer-ocr">PAGE 2</span>
+  </div>
+</div>
+
+
+<!-- PAGE 3 — SYSTEM B -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-ref">PL-SYS-2025-001 // REV.1</span>
+    <span class="doc-title">SYSTEM B — RECORD</span>
+    <span class="doc-copy">NOT FOR DAILY USE</span>
+  </div>
+
+  <div class="system-block">
+    <div class="system-header">
+      <div class="system-id">SYS B</div>
+      <div class="system-name">Record</div>
+      <div class="system-verdict">BANNED — DO NOT PRODUCE</div>
+    </div>
+    <div class="system-body">
+      <div class="body-text">A document that describes something that happened. It points backward in time. A coherent reconstruction of events is possible from reading it. The viewer can understand what occurred — even if the document is bureaucratic in form.</div>
+    </div>
+  </div>
+
+  <div class="section-label">What System B feels like</div>
+  <div class="body-text">Understanding. You know what happened. The document explains, even if technically it is a form. The institution is coherent — it received something, logged it, described it, and filed it. A story is recoverable from the content.</div>
+
+  <div class="section-label">Real-world examples of System B</div>
+  <div class="body-text">News article. Police report that reads as narrative. Incident report with clear sequence of events. Medical record with complete symptoms and treatment. Court filing with reconstructable timeline. Any document where the content, taken as a whole, explains something.</div>
+
+  <div class="section-label">The System B discriminator — one test only</div>
+  <div class="kill-rule">
+    <div class="kill-label">System B test</div>
+    Can a reader reconstruct what happened from this document — even partially? If yes: System B. Remove the explanatory content. Replace with [BLANK], [REDACTED], or PENDING.
+  </div>
+
+  <div class="section-label">System B contamination — what to watch for</div>
+  <table class="spec">
+    <tr><td>Narrative description</td><td>"At 02:14, an image depicting an unmanned corridor was submitted via intake channel B-17." — This tells a story with a time, an action, and a subject. System B.</td></tr>
+    <tr><td>Complete subject identification</td><td>"The subject showed no identifiable personnel." — This describes what the exhibit contains. Now the viewer knows what the image is. System B.</td></tr>
+    <tr><td>Causal explanation</td><td>"Access was denied due to incomplete classification data." — This explains why something happened. System B.</td></tr>
+    <tr><td>Resolved fields</td><td>All fields filled in correctly, no blanks, coherent data throughout. The document is complete. System B.</td></tr>
+    <tr><td>Sequential logic</td><td>Fields that, read in order, construct a timeline or narrative. Even if each field individually seems neutral. System B.</td></tr>
+  </table>
+
+  <div class="section-label">Examples — same subject, System B vs System C</div>
+  <div class="example-block wrong">
+    <div class="example-label">SYSTEM B — wrong</div>
+    <div class="example-text">INCIDENT REPORT — 14.03.25<br>At 02:14, an image depicting an unmanned corridor was submitted via intake channel B-17. The subject showed no identifiable personnel. The image was logged under case PL-25-0001 and forwarded to classification.</div>
+  </div>
+  <div class="example-block right">
+    <div class="example-label">SYSTEM C — correct</div>
+    <div class="example-text">CASE NO.        PL-25-0001<br>DATE            [blank]<br>CHANNEL         [REDACTED]<br>SUBJECT         PENDING CLASSIFICATION<br>FORWARDED TO    [blank]<br>STATUS          HOLD — REVIEW PENDING</div>
+  </div>
+
+  <div class="section-label">Why Paradise Lobby avoids System B</div>
+  <div class="body-text">System B still gives the viewer resolution. Even in bureaucratic form — even with stamps and case numbers — if the content explains, the institution becomes legible. The viewer understands the institution. That is the wrong outcome. Paradise Lobby's institution must remain fundamentally incomprehensible — not mysterious for dramatic effect, but incomprehensible because it genuinely cannot classify what it is processing.</div>
+
+  <div class="body-text">A key distinction: a police report that is incomplete, contradictory, and missing key fields can be System C even though it resembles a System B document. The discriminator is not the form — it is whether reconstruction succeeds. System B = reconstruction possible. System C = reconstruction fails.</div>
+
+  <div class="page-footer">
+    <span class="footer-ocr">PLB-SYS/25/001 // ATT-03</span>
+    <span class="footer-ocr">PAGE 3</span>
+  </div>
+</div>
+
+
+<!-- PAGE 4 — SYSTEM C -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-ref">PL-SYS-2025-001 // REV.1</span>
+    <span class="doc-title">SYSTEM C — RESIDUE</span>
+    <span class="doc-copy">NOT FOR DAILY USE</span>
+  </div>
+
+  <div class="system-block">
+    <div class="system-header">
+      <div class="system-id">SYS C</div>
+      <div class="system-name">Residue</div>
+      <div class="system-verdict">PARADISE LOBBY — ALL OUTPUT</div>
+    </div>
+    <div class="system-body">
+      <div class="body-text">A document that exists as the administrative trace of a process the institution could not resolve. No event. No story. No resolution. The institution processed something it could not classify and filed the result. The viewer arrives after everything has already happened and finds only the paperwork. The paperwork does not explain what happened.</div>
+    </div>
+  </div>
+
+  <div class="kill-rule">
+    <div class="kill-label">Core principle — System C</div>
+    The institution processes things it cannot classify. The blanks are not bureaucratic laziness — they are evidence of institutional incomprehension. The handler field is blank not because the clerk forgot, but because the institution could not determine who should handle this. The date is missing not because it was overlooked, but because the intake timestamp was never confirmed. Every incomplete field implies that the institution tried and could not answer.
+  </div>
+
+  <div class="section-label">What System C feels like</div>
+  <div class="body-text">You are holding something you were not supposed to find. The institution processed this without understanding it. The institution does not know you have these pages. The case is open, suspended, unresolved — not because something dramatic is pending, but because the institution's process reached an incomprehensible input and stalled.</div>
+
+  <div class="section-label">Three rules that define System C</div>
+  <div class="rule" style="margin-bottom:8px;"><span class="rule-id">R-C-01</span>No drama. A SEIZURE ORDER ACTIVE stamp is not dramatic — it is procedural. The institution issues seizure orders the way it issues any administrative action. Without emphasis. Without urgency.</div>
+  <div class="rule" style="margin-bottom:8px;"><span class="rule-id">R-C-02</span>No event creation. Nothing in the document announces that something is about to happen. The institution does not build toward events. Administrative status fields (PENDING, ON HOLD, SUSPENDED) are allowed — they imply indefinite continuation, not a future action.</div>
+  <div class="rule" style="margin-bottom:8px;"><span class="rule-id">R-C-03</span>Only processing residue. Everything in the document is the result of a process that has already occurred or is indefinitely suspended. The case is open. The review is pending. The archive priority is unassigned. The institution is not waiting to act — it simply has not resolved anything and may never do so.</div>
+
+  <div class="section-label">Real-world examples of System C</div>
+  <div class="body-text">A form with half its fields blank. An intake sheet for something that was logged but never resolved. A chain of custody record where one transfer has no destination. A classification document where the classification field reads PENDING. A photocopy of a photocopy of a report that no longer exists in original form. A denial notice that does not state what was denied.</div>
+
+  <div class="section-label">System C in Paradise Lobby — specific examples</div>
+  <table class="spec">
+    <tr><td>C1 correct</td><td>Intake sheet. Grey exhibit image. Two blank fields. Stamp: RECEIVED — UNCLASSIFIED. Footer OCR string. No explanation of what was received or why.</td></tr>
+    <tr><td>D1 correct</td><td>Word BREACH at SCALE_A. Case reference. Date field blank. Stamp: HOLD — REVIEW PENDING. What was breached is not stated anywhere in the document.</td></tr>
+    <tr><td>C2 correct</td><td>Chain of custody table. Third transfer row: recipient field blank. The document travelled somewhere. Nobody recorded where. The table does not resolve.</td></tr>
+    <tr><td>D2 correct</td><td>Boxed directive: ACCESS TO THIS RECORD HAS BEEN SUSPENDED. No reason given. No duration stated. No reference to what the record contains.</td></tr>
+  </table>
+
+  <div class="page-footer">
+    <span class="footer-ocr">PLB-SYS/25/001 // ATT-04</span>
+    <span class="footer-ocr">PAGE 4</span>
+  </div>
+</div>
+
+
+<!-- PAGE 5 — KILL-SWITCH + COMPARISON + PRODUCTION USE -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-ref">PL-SYS-2025-001 // REV.1</span>
+    <span class="doc-title">KILL-SWITCH + FULL COMPARISON</span>
+    <span class="doc-copy">NOT FOR DAILY USE</span>
+  </div>
+
+  <div class="kill-rule">
+    <div class="kill-label">Kill-switch — apply during production when drift is detected</div>
+    If any line in the document explains what happened or why, delete that line and replace it with [BLANK], [REDACTED], or PENDING. One sentence of explanation collapses a System C document into System B. There are no exceptions.
+  </div>
+
+  <div class="section-label">Full comparison — same subject, all three systems</div>
+  <div class="body-text" style="margin-bottom:12px;">Subject: a photograph of an empty corridor was submitted to the institution.</div>
+
+  <div class="example-block wrong">
+    <div class="example-label">SYSTEM A — event (wrong)</div>
+    <div class="example-text">
+      NOTICE OF DOCUMENTATION<br>
+      The submitted image has been accepted for review.<br>
+      A full assessment will be completed within 30 days.<br>
+      You will be notified of the outcome.<br><br>
+      <span style="font-size:7px; color:var(--scan);">Why wrong: announces future actions, promises outcomes, addresses viewer directly. Institution is performing.</span>
+    </div>
+  </div>
+
+  <div class="example-block wrong">
+    <div class="example-label">SYSTEM B — record (wrong)</div>
+    <div class="example-text">
+      INCIDENT REPORT — 14.03.25<br>
+      At 02:14, an image depicting an unmanned corridor was submitted via intake channel B-17. The subject showed no identifiable personnel. The image was logged under case PL-25-0001 and forwarded to classification.<br><br>
+      <span style="font-size:7px; color:var(--scan);">Why wrong: a sequence of events is reconstructable. Subject is identified. Time is logged. Viewer understands what happened.</span>
+    </div>
+  </div>
+
+  <div class="example-block right">
+    <div class="example-label">SYSTEM C — residue (correct)</div>
+    <div class="example-text">
+      INTAKE DOCUMENT — CLASSIFICATION PENDING<br>
+      CASE NO.         PL-25-0001<br>
+      DATE             [blank]<br>
+      CLASSIFICATION   [blank]<br>
+      ─────────────────────────────<br>
+      EXHIBIT 01 // REF: PL-25-0001-C<br>
+      [image — upper third redacted]<br>
+      ─────────────────────────────<br>
+      STATUS           PENDING REVIEW<br>
+      HANDLER          [blank]<br>
+      RECEIVED BY      [blank]<br>
+      ─────────────────────────────<br>
+      HOLD — REVIEW PENDING<br><br>
+      PLB-IN/25/0001 // ATT-01 // HASH:[REDACTED]<br><br>
+      <span style="font-size:7px; color:var(--scan);">Why correct: no story. No event. No resolution. Date missing. Handler unassigned. Exhibit partially redacted. Viewer has more questions after reading than before.</span>
+    </div>
+  </div>
+
+  <div class="section-label">The clerk artifact — mandatory System C marker</div>
+  <div class="body-text">Every CUSTODY document must include one clerk artifact — evidence that a human processed this form and made an error. Not damage aesthetic. Proof of process.</div>
+  <table class="spec">
+    <tr><td>Mis-typed field</td><td>Type CLASSIFCATION, cover with VOID_WHITE bar, type CLASSIFICATION correctly beside it. The correction shows the institution tried. The error shows the clerk was human.</td></tr>
+    <tr><td>Crossed-out value</td><td>A field value struck through and replaced — HANDLER: [strikethrough] P. VAAN → J. MARSH. The case changed hands and someone updated the form by hand.</td></tr>
+    <tr><td>Wrong form number</td><td>Footer reference says ATT-02 but the document is clearly ATT-01. Nobody corrected it.</td></tr>
+  </table>
+  <div class="body-text" style="margin-top:8px; font-size:7.5px; color:var(--scan);">One clerk artifact per CUSTODY document. Logged in the session log. Do not repeat the same artifact in consecutive sessions.</div>
+
+  <div class="section-label">Quick reference — production use</div>
+  <div class="rule"><span class="rule-id">IN BUILD</span>After placing every content element: is this explaining, announcing, or resolving something? If yes — remove it.</div>
+  <div class="rule" style="margin-top:4px;"><span class="rule-id">AT ANCHOR 2</span>Temperature check. Administratively cold, not stylishly cold. System C is the temperature of a filing cabinet nobody has opened in three years.</div>
+  <div class="rule" style="margin-top:4px;"><span class="rule-id">AT ANCHOR 4</span>Run kill-switch. Find the line that explains. Delete it. Replace with [REDACTED] or PENDING.</div>
+
+  <div class="page-footer">
+    <span class="footer-ocr">PLB-SYS/25/001 // ATT-05 // FINAL PAGE</span>
+    <span class="footer-ocr">PAGE 5</span>
+  </div>
+</div>
+
+</body>
+</html>

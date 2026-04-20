@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PL_TRAINING_v3</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+  :root { --paper:#E2D9C8; --ink:#1C1914; --accent:#5B6B8A; --void:#F0EBE1; --scan:#B8B0A4; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#1A1A1A; display:flex; flex-direction:column; align-items:center; padding:40px 20px; gap:48px; font-family:'Share Tech Mono','Courier New',monospace; }
+  .page { background:var(--paper); width:794px; min-height:1123px; padding:52px 60px 88px; position:relative; color:var(--ink); box-shadow:5px 5px 24px rgba(0,0,0,0.55); }
+  .page::before { content:''; position:absolute; left:0; top:0; bottom:0; width:7px; background:linear-gradient(to right,rgba(0,0,0,0.13),transparent); pointer-events:none; }
+  .doc-header { border-top:2px solid var(--ink); border-bottom:1px solid var(--ink); padding:6px 0; display:flex; justify-content:space-between; align-items:baseline; margin-bottom:36px; }
+  .doc-ref { font-size:7px; letter-spacing:.18em; color:var(--accent); text-transform:uppercase; }
+  .doc-title { font-size:7px; letter-spacing:.25em; text-transform:uppercase; }
+  .doc-copy { font-size:7px; letter-spacing:.12em; color:var(--scan); }
+  .section-label { font-size:7px; letter-spacing:.28em; color:var(--accent); text-transform:uppercase; border-bottom:1px solid var(--scan); padding-bottom:4px; margin-bottom:14px; margin-top:22px; }
+  .phase-header { display:flex; align-items:baseline; gap:14px; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid rgba(28,25,20,0.2); }
+  .phase-id { font-size:7px; letter-spacing:.25em; color:var(--accent); text-transform:uppercase; border:1px solid var(--accent); padding:3px 8px; white-space:nowrap; }
+  .phase-name { font-size:11px; letter-spacing:.06em; text-transform:uppercase; }
+  .phase-time { font-size:7px; letter-spacing:.12em; color:var(--scan); margin-left:auto; white-space:nowrap; }
+  .step-row { display:flex; gap:0; border-bottom:1px solid rgba(28,25,20,0.1); min-height:32px; }
+  .step-num { font-size:7px; letter-spacing:.15em; color:var(--accent); padding:9px 10px 8px 0; border-right:1px solid rgba(28,25,20,0.12); min-width:52px; text-align:right; display:flex; align-items:flex-start; justify-content:flex-end; padding-top:9px; }
+  .step-action { font-size:8.5px; letter-spacing:.035em; line-height:1.65; padding:7px 12px; flex:1; }
+  .step-check { font-size:9px; color:var(--scan); padding:7px 10px; border-left:1px solid rgba(28,25,20,0.12); min-width:40px; text-align:center; display:flex; align-items:flex-start; justify-content:center; padding-top:9px; }
+  .note { font-size:7px; color:var(--scan); letter-spacing:.07em; line-height:1.65; margin-top:4px; }
+  .checkpoint { border:1px solid var(--ink); padding:10px 14px; margin:14px 0; }
+  .checkpoint-label { font-size:7px; letter-spacing:.22em; color:var(--accent); text-transform:uppercase; margin-bottom:5px; }
+  .checkpoint-text { font-size:8.5px; letter-spacing:.035em; line-height:1.65; }
+  .warning { background:var(--ink); color:var(--paper); padding:10px 14px; margin:14px 0; font-size:8px; letter-spacing:.07em; line-height:1.75; }
+  table.spec { width:100%; border-collapse:collapse; margin:8px 0; }
+  table.spec td { font-size:8px; letter-spacing:.05em; padding:5px 8px; vertical-align:top; border-bottom:1px solid rgba(28,25,20,0.1); line-height:1.6; }
+  table.spec td:first-child { color:var(--accent); letter-spacing:.14em; text-transform:uppercase; font-size:7px; width:32%; white-space:nowrap; padding-top:7px; }
+  table.spec tr:last-child td { border-bottom:none; }
+  .output-box { border-left:3px solid var(--accent); padding:8px 14px; margin:10px 0; }
+  .output-label { font-size:7px; letter-spacing:.22em; color:var(--accent); text-transform:uppercase; margin-bottom:4px; }
+  .output-text { font-size:8.5px; letter-spacing:.035em; line-height:1.65; }
+  .dice-box { border:1px solid var(--ink); padding:12px 16px; margin:10px 0; display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .dice-title { font-size:7px; letter-spacing:.2em; color:var(--accent); text-transform:uppercase; margin-bottom:8px; grid-column:1/-1; border-bottom:1px solid rgba(28,25,20,0.15); padding-bottom:5px; }
+  .dice-col-label { font-size:7px; letter-spacing:.15em; color:var(--ink); text-transform:uppercase; margin-bottom:6px; }
+  .dice-values { display:flex; gap:6px; }
+  .dice-val { border:1px solid var(--scan); padding:4px 8px; font-size:9px; letter-spacing:.1em; color:var(--ink); min-width:40px; text-align:center; }
+  .progress-strip { display:flex; gap:2px; margin:14px 0; }
+  .prog-cell { flex:1; height:28px; border:1px solid rgba(28,25,20,0.2); font-size:6px; letter-spacing:.08em; color:var(--scan); display:flex; align-items:center; justify-content:center; text-transform:uppercase; text-align:center; line-height:1.3; padding:2px; }
+  .prog-cell.active { background:rgba(91,107,138,0.12); color:var(--accent); border-color:var(--accent); }
+  .log-row { display:flex; gap:0; border-bottom:1px solid rgba(28,25,20,0.1); min-height:28px; }
+  .log-field { font-size:7px; color:var(--accent); letter-spacing:.12em; text-transform:uppercase; padding:7px 10px; border-right:1px solid rgba(28,25,20,0.12); min-width:130px; align-self:center; }
+  .log-blank { flex:1; padding:7px 10px; font-size:8px; color:rgba(28,25,20,0.25); letter-spacing:.06em; }
+  .stamp { display:inline-block; border:2px solid var(--accent); color:var(--accent); font-size:7px; letter-spacing:.2em; text-transform:uppercase; padding:3px 9px; transform:rotate(-1.6deg); opacity:.72; margin:6px 0; }
+  .rule { font-size:9px; letter-spacing:.05em; line-height:1.75; color:var(--ink); margin-bottom:4px; }
+  .rule-id { font-size:7px; color:var(--accent); letter-spacing:.18em; margin-right:8px; }
+  hr { border:none; border-top:1px solid rgba(28,25,20,0.13); margin:20px 0; }
+  .swatch { display:inline-block; width:10px; height:10px; border:1px solid rgba(0,0,0,0.2); vertical-align:middle; margin-right:4px; position:relative; top:-1px; }
+  .page-footer { position:absolute; bottom:30px; left:60px; right:60px; border-top:1px solid var(--scan); padding-top:6px; display:flex; justify-content:space-between; }
+  .footer-ocr { font-size:6px; letter-spacing:.18em; color:var(--scan); text-transform:uppercase; }
+  .body-text { font-size:8.5px; letter-spacing:.04em; line-height:1.75; margin-bottom:8px; }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 — COVER -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-ref">PL-TRN-2025-003 // REV.3</span>
+    <span class="doc-title">PARADISE LOBBY — TRAINING SEQUENCE</span>
+    <span class="doc-copy">DIGITAL-FIRST / IG NATIVE</span>
+  </div>
+
+  <div style="margin-bottom:20px;">
+    <table class="spec">
+      <tr><td>Version</td><td>3.0 — All corrections incorporated. No printer required.</td></tr>
+      <tr><td>Primary output</td><td>Instagram 4×5 (1080×1350px). A3 print is a future layer.</td></tr>
+      <tr><td>Color mode</td><td>RGB throughout. CMYK only at print export.</td></tr>
+      <tr><td>Release unit</td><td>1 CASE/DAY = 2 POSTS (C + D). No orphan posters.</td></tr>
+      <tr><td>Total phases</td><td>7 sequential. Complete each before advancing.</td></tr>
+      <tr><td>Prerequisite</td><td>PL_OPS_v3.0 and PL_SYSTEMS_v1.0 read in full before starting.</td></tr>
+    </table>
+  </div>
+
+  <div class="warning">These five colour values are allowed materials — not a palette. No additional colours permitted. Variation comes from process only: scan, damage, generation loss. Do not design with them. Use them.</div>
+
+  <div class="section-label">Colour values</div>
+  <table class="spec">
+    <tr><td>PAPER</td><td><span class="swatch" style="background:#E2D9C8;"></span>#E2D9C8</td></tr>
+    <tr><td>INK</td><td><span class="swatch" style="background:#1C1914;"></span>#1C1914</td></tr>
+    <tr><td>STAMP BLUE</td><td><span class="swatch" style="background:#5B6B8A;"></span>#5B6B8A</td></tr>
+    <tr><td>SCAN GREY</td><td><span class="swatch" style="background:#B8B0A4;"></span>#B8B0A4</td></tr>
+    <tr><td>VOID WHITE</td><td><span class="swatch" style="background:#F0EBE1; border:1px solid #ccc;"></span>#F0EBE1</td></tr>
+  </table>
+
+  <div class="section-label">Training map</div>
+  <div class="progress-strip">
+    <div class="prog-cell active">P1<br>COLOUR</div>
+    <div class="prog-cell">P2<br>GRID</div>
+    <div class="prog-cell">P3<br>TYPE</div>
+    <div class="prog-cell">P4<br>C TEMPLATES</div>
+    <div class="prog-cell">P5<br>D TEMPLATES</div>
+    <div class="prog-cell">P6<br>PAIRING</div>
+    <div class="prog-cell">P7<br>DAMAGE</div>
+  </div>
+
+  <div class="section-label">Font installation — do first</div>
+  <div class="step-row"><div class="step-num">F.01</div><div class="step-action">Install DIN 1451 LT Pro. Confirm Engschrift and Mittelschrift variants are both present. Type a word in each in Photoshop at 72px to confirm rendering.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">F.02</div><div class="step-action">Install OCR-B. Set at 12px in Photoshop. Confirm individual characters are distinct and legible at that size.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">F.03</div><div class="step-action">Install Libre Barcode 128. Type "PL250001D" using the font. It must render as a barcode — no letterforms visible. If letterforms show, reinstall.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">F.04</div><div class="step-action">Open Photoshop swatches. Create group PL_MATERIALS. Enter all five hex values. Delete default swatches. Save as PL_SWATCHES.aco. This file is permanent — load at start of every session.</div><div class="step-check">☐</div></div>
+
+  <div class="checkpoint" style="margin-top:16px;">
+    <div class="checkpoint-label">Standing order — all sessions</div>
+    <div class="checkpoint-text">If the document looks designed at any point, identify the element making it look designed and remove it. This rule supersedes all other rules.</div>
+  </div>
+
+  <div class="page-footer">
+    <span class="footer-ocr">PLB-TRN/25/003 // ATT-01</span>
+    <span class="footer-ocr">PAGE 1</span>
+  </div>
+</div>
+
+
+<!-- PAGE 2 — PHASE 1 + 2 -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-ref">PL-TRN-2025-003 // REV.3</span>
+    <span class="doc-title">PHASE 1 — COLOUR / PHASE 2 — GRID</span>
+    <span class="doc-copy">DIGITAL-FIRST</span>
+  </div>
+
+  <div class="phase-header">
+    <div class="phase-id">P1</div>
+    <div class="phase-name">Colour Calibration</div>
+    <div class="phase-time">1 SESSION / ~45 MIN</div>
+  </div>
+
+  <div class="step-row"><div class="step-num">1.01</div><div class="step-action">New Photoshop file: 1080×1350px, RGB, 72dpi. Fill background with #E2D9C8. Add a rectangle #1C1914. Add a smaller rectangle #5B6B8A. Add a 1px rule #B8B0A4. Add a small block #F0EBE1. Export as JPG 85%. Look at it on your phone. Does #E2D9C8 read as aged paper or as a colour chip? It must read as paper. Save as PL_REF_COLOUR_v1.psd.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">1.02</div><div class="step-action">Search for three reference images: a scanned government form, a receipt photo, and a photocopied document. Study paper tone and ink quality. Note what makes them read as documents rather than designed objects. Save to PL_REFS/DOCUMENTS.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">1.03</div><div class="step-action">Search for five industrial source images: corridors, facades, wire panels, concrete stairs, utility structures. Nothing expressive. Save to PL_REFS/IMAGES. This is your image bank — do not use yet.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">1.04</div><div class="step-action">Take one reference document image. Bring into Photoshop. Desaturate. Open Curves: pull top-right point down 5–8px, pull bottom-left up 3–5px. Export and compare to original. This is the baseline treatment. Practice until it takes under 2 minutes.</div><div class="step-check">☐</div></div>
+
+  <div class="checkpoint" style="margin-top:14px;">
+    <div class="checkpoint-label">Phase 1 checkpoint</div>
+    <div class="checkpoint-text">Look at PL_REF_COLOUR_v1.psd on your phone. Does #E2D9C8 feel like paper? If it still feels like a colour swatch — spend five more minutes looking at scanned document references until the association shifts.</div>
+  </div>
+
+  <hr>
+
+  <div class="phase-header" style="margin-top:0;">
+    <div class="phase-id">P2</div>
+    <div class="phase-name">Grid Construction</div>
+    <div class="phase-time">1 SESSION / ~30 MIN</div>
+  </div>
+
+  <div class="step-row"><div class="step-num">2.01</div><div class="step-action">New Photoshop file: 1080×1350px, RGB, 72dpi. Background: solid fill #E2D9C8 on layer PAPER_BASE. This is always the bottom-most layer. It never changes.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">2.02</div><div class="step-action">View → New Guide Layout. Columns: 6. Rows: 12. Margins: 72px all sides. Gutter: 16px. Confirm. All guides placed automatically.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">2.03</div><div class="step-action">Create layer group 00_GUIDES. Inside it, create sublayer GRID_VISIBLE. Line Tool (U), Shape mode, 1px stroke, #B8B0A4, 50% opacity, Snap to Guides ON. Draw one line along each guide. This layer toggles off at export — it is never in the final image.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">2.04</div><div class="step-action">Create the six PSD layer groups above PAPER_BASE in order: 05_EXPORT_GUIDES / 04_COLOR_GRADE / 03_DAMAGE / 02_TYPE_ADMIN / 01_IMAGE / 00_GUIDES. All empty. Save as PL_GRID_MASTER_IG_v1.psd. This is the master base for all templates.</div><div class="step-check">☐</div></div>
+
+  <div class="dice-box">
+    <div class="dice-title">Grid 2 offset — dice rule. Apply to all content layers. Log values every session. Never repeat the same pair consecutively.</div>
+    <div><div class="dice-col-label">Horizontal (→)</div><div class="dice-values"><div class="dice-val">+6px</div><div class="dice-val">+8px</div><div class="dice-val">+10px</div></div></div>
+    <div><div class="dice-col-label">Vertical (↓)</div><div class="dice-values"><div class="dice-val">+6px</div><div class="dice-val">+8px</div><div class="dice-val">+10px</div></div></div>
+  </div>
+
+  <div class="checkpoint">
+    <div class="checkpoint-label">Phase 2 checkpoint</div>
+    <div class="checkpoint-text">Toggle GRID_VISIBLE off. The document should look like a blank piece of paper with correct margins and nothing else. If you can see structure with GRID_VISIBLE off — something is in the wrong layer. Fix it before advancing.</div>
+  </div>
+
+  <div class="page-footer">
+    <span class="footer-ocr">PLB-TRN/25/003 // ATT-02</span>
+    <span class="footer-ocr">PAGE 2</span>
+  </div>
+</div>
+
+
+<!-- PAGE 3 — PHASE 3 TYPOGRAPHY -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-ref">PL-TRN-2025-003 // REV.3</span>
+    <span class="doc-title">PHASE 3 — TYPOGRAPHY</span>
+    <span class="doc-copy">DIGITAL-FIRST</span>
+  </div>
+
+  <div class="phase-header">
+    <div class="phase-id">P3</div>
+    <div class="phase-name">Character Styles + Scale Test</div>
+    <div class="phase-time">2 SESSIONS / ~90 MIN</div>
+  </div>
+
+  <div class="section-label">Session 3A — Build character styles</div>
+  <div class="step-row"><div class="step-num">3.01</div><div class="step-action">Open PL_GRID_MASTER_IG_v1.psd. In 02_TYPE_ADMIN, build one text layer for each of the six character styles: DIN_INCIDENT / DIN_HEADER / DIN_LABEL / DIN_BODY / OCR_LINE / OCR_MICRO. Apply the exact font, size, tracking, and case from PL_OPS Section Typography. Name each layer with the style name.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">3.02</div><div class="step-action">Set DIN_INCIDENT at 144px: type BREACH, left-aligned to the 72px margin, tracking +5. Look at 100% zoom (Cmd+1). Does it read as an administrative classification label or as a poster headline? If poster — the tracking is too wide. Reduce toward 0 until it reads as a label. Do not reduce the size.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">3.03</div><div class="step-action">Test OCR_LINE: type PLB-IN/25/0001 // ATT-01 // HASH:[REDACTED] in OCR-B at 12px, tracking +80, #5B6B8A, placed at bottom of canvas 30px from edge. Export JPG 85%. Check on phone — the text should be small but visible if you look for it. If it disappears completely — increase to 14px maximum.</div><div class="step-check">☐</div></div>
+
+  <div class="section-label">Session 3B — Lexicon test (abbreviated)</div>
+  <div class="step-row"><div class="step-num">3.04</div><div class="step-action">Build four test exports — one canvas each: GATEWAY / WITNESS / THRESHOLD / EVIDENCE. Each: the lexicon word at DIN_INCIDENT scale, left-aligned to margin, with OCR_LINE below it. Nothing else. Export all four as JPG.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">3.05</div><div class="step-action">AirDrop to phone. Scroll through fast. Each word: does it read as a classification label or as a statement? Classification — correct. Statement — that word needs more surrounding form content (field labels, case reference visible, stamp) in the real template before it earns its size. Note which words need this treatment.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">3.06</div><div class="step-action">On two of the exports: cover the hero word with your thumb. Is there still something there? The OCR string alone — does it feel like a document fragment or like nothing? If nothing — the hero word is doing all the work. In real templates, you will need more administrative content below and around it.</div><div class="step-check">☐</div></div>
+
+  <div class="checkpoint">
+    <div class="checkpoint-label">Phase 3 checkpoint</div>
+    <div class="checkpoint-text">Show two of the lexicon test exports to someone who does not know this project. Do not explain. Ask: what are you looking at? Correct answer: documents, records, something official. If they say posters or art — return to step 3.02 and reduce the designed quality of the typographic presentation.</div>
+  </div>
+
+  <div class="output-box">
+    <div class="output-label">Phase 3 deliverables</div>
+    <div class="output-text">PL_GRID_MASTER_IG_v1.psd with all character style layers saved and named. Four lexicon test exports with notes on which words need more context. OCR_LINE tested and confirmed readable at phone scale.</div>
+  </div>
+
+  <div class="page-footer">
+    <span class="footer-ocr">PLB-TRN/25/003 // ATT-03</span>
+    <span class="footer-ocr">PAGE 3</span>
+  </div>
+</div>
+
+
+<!-- PAGE 4 — PHASE 4 C TEMPLATES -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-ref">PL-TRN-2025-003 // REV.3</span>
+    <span class="doc-title">PHASE 4 — CUSTODY TEMPLATES</span>
+    <span class="doc-copy">DIGITAL-FIRST</span>
+  </div>
+
+  <div class="phase-header">
+    <div class="phase-id">P4</div>
+    <div class="phase-name">C1 → C2 → C3</div>
+    <div class="phase-time">3 SESSIONS / ~2.5 HRS</div>
+  </div>
+
+  <div class="body-text">CUSTODY before DIRECTIVE. Always. The institution files before it acts. Build all three C templates before opening a D template. C templates have no hero word. They are the institution speaking to itself.</div>
+
+  <div class="section-label">C1 — Intake Sheet</div>
+  <div class="step-row"><div class="step-num">4.01</div><div class="step-action">Duplicate PL_GRID_MASTER_IG_v1.psd. File → Save As → STP_C1_v01.psd. Check: all six layer groups present before any content is placed. Log your Grid 2 offset pair for this session.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">4.02</div><div class="step-action">In 02_TYPE_ADMIN: header block at top, left margin. DIN_HEADER: INTAKE DOCUMENT — CLASSIFICATION PENDING. Below it: a 1px INK rule. Then three fields — CASE NO. / DATE / CLASSIFICATION — each with a label in DIN_LABEL and the value blank. No fills. Paper is the background.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">4.03</div><div class="step-action">Right-side column: six field labels maximum in DIN_LABEL. Fill two with placeholder values in DIN_BODY. Leave at least two blank — label and field line present, no value. The blank fields are not errors. They are evidence of the institution's incomprehension.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">4.04</div><div class="step-action">In 01_IMAGE: grey rectangle placeholder as IMAGE_SO. Add 1px INK exhibit border, 4px inset. Add OCR_LINE below: EXHIBIT 01 // REF: PL-25-XXXX-C. Add one VOID_WHITE redaction bar over the top third of the placeholder. Nudge the entire 01_IMAGE group by your Grid 2 offset.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">4.05</div><div class="step-action">Add one clerk artifact — mis-typed field label corrected with VOID_WHITE, or wrong footer reference, or a struck-through field value. This is mandatory on every C template. Log which artifact you used.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">4.06</div><div class="step-action">In 02_TYPE_ADMIN: add barcode using Libre Barcode 128 — type PL250001C, colour #1C1914, half-canvas width. Add one primary stamp (RECEIVED — UNCLASSIFIED), ±3° rotation, Multiply, 90% opacity. Add OCR_LINE footer: PLB-IN/25/XXXX // ATT-01 // HASH:[REDACTED].</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">4.07</div><div class="step-action">In 05_EXPORT_GUIDES: draw three labelled crop rectangles for carousel slides 2, 3, 4. CROP_SLIDE2_HEADER (around header and stamp), CROP_SLIDE3_IMAGE (around exhibit), CROP_SLIDE4_MACHINE (around footer/barcode zone). These stay in the template permanently.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">4.08</div><div class="step-action">Run kill-switch: read every line of content. Does any line explain what happened or why? If yes — replace with [REDACTED] or PENDING. Run anchor test from PL_OPS. Log results. ANCHOR 4: identify the aesthetic element and remove it.</div><div class="step-check">☐</div></div>
+
+  <div class="section-label">C2 and C3</div>
+  <div class="step-row"><div class="step-num">4.09</div><div class="step-action">Build C2 (Chain of Custody) with the same sequence. C2 uses a table layout — rows for custody transfers, at least one row with a blank recipient field. Smaller image, less prominent. Clerk artifact. Kill-switch. Anchor test. Log.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">4.10</div><div class="step-action">Build C3 (Archive Card). Most minimal of the three. Dominant element is a large OCR-B file ID — not a lexicon word, just the case number large. Small polaroid-proportion image. Maximum two redaction bars. Maximum two stamps. Clerk artifact. Kill-switch. Anchor test. Log.</div><div class="step-check">☐</div></div>
+
+  <div class="checkpoint">
+    <div class="checkpoint-label">Phase 4 checkpoint</div>
+    <div class="checkpoint-text">Export Slide 1 from all three C templates (grey placeholder images). View side by side. Do they read as three forms from the same institution — different departments, same world? If not — find the inconsistency and standardise it. Do the carousel crops reveal something worth seeing in the detail? If the detail crops are empty, add more OCR content or field labels before advancing.</div>
+  </div>
+
+  <div class="page-footer">
+    <span class="footer-ocr">PLB-TRN/25/003 // ATT-04</span>
+    <span class="footer-ocr">PAGE 4</span>
+  </div>
+</div>
+
+
+<!-- PAGE 5 — PHASE 5 + 6 -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-ref">PL-TRN-2025-003 // REV.3</span>
+    <span class="doc-title">PHASE 5 — DIRECTIVE / PHASE 6 — FIRST CASE</span>
+    <span class="doc-copy">DIGITAL-FIRST</span>
+  </div>
+
+  <div class="phase-header">
+    <div class="phase-id">P5</div>
+    <div class="phase-name">D1 → D2 → D3</div>
+    <div class="phase-time">3 SESSIONS / ~2 HRS</div>
+  </div>
+
+  <div class="step-row"><div class="step-num">5.01</div><div class="step-action">D1 (Declaration): Duplicate master, save as STP_D1_v01.psd. Place hero word at DIN_INCIDENT scale, left-aligned. Immediately surround it with administrative field content. Cover the word with your thumb — does the document still function? If no: add form content until it does. Then uncover. Kill-switch. Anchor test. Log.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">5.02</div><div class="step-action">D2 (Notice of Restriction): No hero word at SCALE_A. Authority comes from a boxed directive — 1px INK hard rectangle, DIN_HEADER text inside: ACCESS TO THIS RECORD HAS BEEN SUSPENDED or equivalent. No reason given. No duration. Image more degraded than C templates. Kill-switch. Anchor test. Log.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">5.03</div><div class="step-action">D3 (Breach Log): One physical or physically-sourced cutout or extraction. Digital method: find a high-res scan of a torn paper edge or cut mark. Apply as layer mask on IMAGE_SO, removing an irregular section. The absence is the content. It must read as something extracted — not as collage. Kill-switch. Anchor test. Log.</div><div class="step-check">☐</div></div>
+
+  <div class="checkpoint" style="margin-top:14px;">
+    <div class="checkpoint-label">Phase 5 checkpoint</div>
+    <div class="checkpoint-text">Place one D and one C export side by side. Same institution, different departments. Not the same designer's portfolio. If they look like a portfolio — introduce more variation in field layout, stamp choice, and image treatment between templates.</div>
+  </div>
+
+  <hr>
+
+  <div class="phase-header" style="margin-top:0;">
+    <div class="phase-id">P6</div>
+    <div class="phase-name">First Complete Case — PL-25-0001</div>
+    <div class="phase-time">2 SESSIONS / ~90 MIN</div>
+  </div>
+
+  <div class="body-text">This is the first session following the 45-minute daily execution protocol from PL_OPS Section 6 exactly. Timed. Follow the sequence without deviation.</div>
+
+  <div class="step-row"><div class="step-num">6.01</div><div class="step-action">Log first: case number PL-25-0001, date, template pair, Grid 2 offset, posting order, planned damage signature. Then open the C template.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">6.02</div><div class="step-action">Replace IMAGE_SO with a real source image from PL_REFS/IMAGES. Apply baseline treatment (desaturate + curves). Image test: does it function as evidence? If not — find another. 5 minutes maximum on image selection.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">6.03</div><div class="step-action">Set all OCR strings to PL-25-0001-C. Complete field content. Apply Grid 2 offset. Leave two fields blank. Add clerk artifact.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">6.04</div><div class="step-action">Open D template. Replace IMAGE_SO with same or adjacent source image. Set hero word. Set stamp. Set OCR strings to PL-25-0001-D. Apply same Grid 2 offset.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">6.05</div><div class="step-action">Toggle damage signature on both — same signature per case pair. Add one reality artifact to each document. Run kill-switch on both. Run anchor test on both. Export all carousel slides (4 minimum per document).</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">6.06</div><div class="step-action">Post in decided order. Minimum 4 hours between the two posts. Note viewer response in log at next session.</div><div class="step-check">☐</div></div>
+
+  <div class="checkpoint">
+    <div class="checkpoint-label">Phase 6 checkpoint</div>
+    <div class="checkpoint-text">After both posts are live: look at them together on your Instagram grid. Does a viewer who knows nothing about this project begin to feel they are seeing something they were not supposed to find? The case number must be visible enough to be noticed by someone who looks. If the pairing is not apparent — the case number placement in the OCR layer needs to be more prominent.</div>
+  </div>
+
+  <div class="page-footer">
+    <span class="footer-ocr">PLB-TRN/25/003 // ATT-05</span>
+    <span class="footer-ocr">PAGE 5</span>
+  </div>
+</div>
+
+
+<!-- PAGE 6 — PHASE 7 + LOG -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-ref">PL-TRN-2025-003 // REV.3</span>
+    <span class="doc-title">PHASE 7 — DAMAGE + ONGOING</span>
+    <span class="doc-copy">DIGITAL-FIRST</span>
+  </div>
+
+  <div class="phase-header">
+    <div class="phase-id">P7</div>
+    <div class="phase-name">All Three Damage Signatures + Production Rhythm</div>
+    <div class="phase-time">3 SESSIONS + ONGOING</div>
+  </div>
+
+  <div class="step-row"><div class="step-num">7.01</div><div class="step-action">SIG_A — THERMAL FADE: Case PL-25-0002. Gradient map layer, Soft Light, irregular brush mask, 40–60% opacity. Compare on/off. Difference: perceptible but not dramatic. If dramatic — reduce. If invisible — increase to just perceptible.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">7.02</div><div class="step-action">SIG_B — GENERATION LOSS: Case PL-25-0003. High-pass → Threshold → Multiply at 15–30%. Digital method: Noise filter on Soft Light layer at 20%. Does it read as photocopy degradation or as Photoshop filter? If filter — reduce opacity and add irregularity to layer mask edges.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">7.03</div><div class="step-action">SIG_C — PHYSICAL SINGLE: Case PL-25-0004. Find a high-res scan of a fold crease or torn edge. Import as Smart Object, Multiply blend, mask to document boundary. Must read as something that happened to the document. If it reads as added — find a different texture or reduce opacity.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">7.04</div><div class="step-action">From Phase 7 onward: vary signatures across consecutive cases. Never the same signature three sessions in a row. After five cases, your archive should contain all three damage types — implying multiple institutional chain positions.</div><div class="step-check">☐</div></div>
+  <div class="step-row"><div class="step-num">7.05</div><div class="step-action">After five complete cases (10 posts): open Instagram. Does the world exist? Can a viewer seeing the grid begin to understand they are looking at an institution — without explanation? If no — return to Phase 6 and examine pairing logic and case number visibility.</div><div class="step-check">☐</div></div>
+
+  <hr>
+
+  <div class="section-label">Production log — one entry per session, mandatory</div>
+  <div class="log-row"><div class="log-field">Case number</div><div class="log-blank">PL-25-____</div></div>
+  <div class="log-row"><div class="log-field">Date</div><div class="log-blank">&nbsp;</div></div>
+  <div class="log-row"><div class="log-field">Templates used</div><div class="log-blank">C__ + D__</div></div>
+  <div class="log-row"><div class="log-field">Grid 2 offset</div><div class="log-blank">X: __px / Y: __px</div></div>
+  <div class="log-row"><div class="log-field">Lexicon word</div><div class="log-blank">&nbsp;</div></div>
+  <div class="log-row"><div class="log-field">Stamp used</div><div class="log-blank">&nbsp;</div></div>
+  <div class="log-row"><div class="log-field">Damage sig</div><div class="log-blank">SIG_A / SIG_B / SIG_C</div></div>
+  <div class="log-row"><div class="log-field">Reality artifact</div><div class="log-blank">&nbsp;</div></div>
+  <div class="log-row"><div class="log-field">Clerk artifact</div><div class="log-blank">&nbsp;</div></div>
+  <div class="log-row"><div class="log-field">Posting order</div><div class="log-blank">C first / D first</div></div>
+  <div class="log-row"><div class="log-field">Kill-switch</div><div class="log-blank">Line removed and replaced with:</div></div>
+  <div class="log-row"><div class="log-field">Anchor 4</div><div class="log-blank">Element removed:</div></div>
+  <div class="log-row"><div class="log-field">Session time</div><div class="log-blank">Over / under 45 min by:</div></div>
+
+  <div style="margin-top:20px; text-align:left;"><div class="stamp">TRAINING SEQUENCE v3 — DIGITAL FIRST</div></div>
+
+  <div class="page-footer">
+    <span class="footer-ocr">PLB-TRN/25/003 // ATT-06 // FINAL PAGE</span>
+    <span class="footer-ocr">PAGE 6</span>
+  </div>
+</div>
+
+</body>
+</html>

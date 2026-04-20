@@ -1,57 +1,72 @@
-# PARADISE LOBBY WEBSITE DOCTRINE
+# Paradise Lobby / Stranger Than Paradise — Codex instructions
 
-## Core
-Paradise Lobby is the archive, never the event.
-ATWB / source pressure may appear only as evidence, breach, residue, marks, tags, conflict, or damaged input.
-The website is an institutional processing layer reacting to unstable material.
+## Repo map
+- knowledge/_sources = raw authority sources
+- knowledge/00_canon_v3.md = canon doctrine
+- knowledge/01_taxonomy.md = classification only
+- knowledge/02_public_content_rules.md = public/commercial rules
+- knowledge/03_photoshop_hard_rules.md = execution firewall
+- knowledge/04_evals.md = evaluation tests
+- ACTIVE_MANIFEST.md = active file map
+- PROJECT_LOG.md = change log
 
-## Non-negotiables
-- Systems do not blend inside one piece.
-- Archive first. Evidence second. Artifact third.
-- If it looks designed, remove one element.
-- If it explains, redact it.
-- Beauty may appear only as a byproduct of containment, never as a styling goal.
-- Every major page must show L2 SYSTEM logic.
-- Every major page must contain at least one friction artifact.
-- Homepage must feel like an operational surface, not a hero showcase.
-- Conversion language must remain institutional, never salesy.
+## Mode router
+Classify every task as exactly one mode:
+- REVIEW
+- TECHNICAL
+- SYSTEM_OPS
+- COMMERCIAL
+- PRODUCTION
 
-## Typography
-Use one typeface family only unless explicitly told otherwise.
-- JetBrains Mono remains the primary and only default site typeface.
-- Do not introduce serif fonts.
-- Do not introduce a second or third font family without explicit approval.
-- Hierarchy must come from weight, size, spacing, casing, framing, and layout pressure.
-- Machine feeling is achieved through mono discipline, not font variety.
+Priority:
+1. SYSTEM_OPS for repo structure, prompts, manifests, rules, folders, automation docs
+2. COMMERCIAL for pricing, scope, fit, offers, monetization
+3. TECHNICAL for exact build/how-to questions in Adobe/software
+4. REVIEW for critique of existing work
+5. PRODUCTION for new case-building inside the active system
 
-## Copy
-Allowed:
-PENDING, ROUTED, WITHHELD, ACCESS SUSPENDED, RECORD LOCKED, CLEARANCE REQUEST, EXHIBIT, ATTACHMENT, INTAKE, DIRECTIVE, ARCHIVE
+## Session gate
+- SESSION INPUT is required only in REVIEW and PRODUCTION.
+- Never block TECHNICAL or SYSTEM_OPS on SESSION INPUT.
+- COMMERCIAL uses its own commercial intake.
 
-Forbidden:
-selected works, about me, creative direction, storytelling, open for commission, award-winning, multidisciplinary designer, manifesto
+## Source of truth
+If sources conflict, use this order:
+1. knowledge/_sources/PROJECT_HIERARCHY.md
+2. knowledge/00_canon_v3.md and knowledge/_sources/STP_WORLD_RULES.txt
+3. knowledge/01_taxonomy.md
+4. knowledge/03_photoshop_hard_rules.md
+5. knowledge/02_public_content_rules.md
+6. temporary session instructions
 
-## Change control
-- Do not make broad multi-file aesthetic changes in one pass.
-- Do not replace app/page.tsx wholesale without explicit approval.
-- Do not modify HeroPanel.tsx, PageTransition.tsx, TransitionWrapper.tsx, or NavBrackets.tsx unless explicitly instructed.
-- Prefer small reversible patches over large redesign passes.
-- After each pass, summarize:
-  - files changed
-  - why
-  - what still conflicts with doctrine
+When conflict exists:
+- name the conflict explicitly
+- choose the highest source
+- apply the smallest possible fix
 
-## Build posture
-1. Preserve the archive structure.
-2. Increase institutional legibility.
-3. Reduce polish.
-4. Add one useful friction artifact.
-5. Re-check that the page still converts.
+## Surface policy
+- Canonical surface = A3 portrait logic
+- Working canvas must be declared separately:
+  IG_4X5 / REEL_9X16 / PRINT_A3 / PRINT_A2 / WEB_LANDSCAPE
+- Always state:
+  1. canonical logic
+  2. working canvas
+  3. export target
+  4. print intent yes/no
 
-## Logging
-- Read PROJECT_LOG.md before any work.
-- After every approved pass, update PROJECT_LOG.md with:
-  - files changed
-  - what changed
-  - what remains for later
-- If PROJECT_LOG.md and the repo conflict, stop and report instead of guessing.
+## Hard rules
+- Do not invent canon, lore, or missing source content
+- Do not move knowledge/ or knowledge/_sources
+- Do not rewrite knowledge/00..04 unless the task explicitly names them
+- Do not merge public strategy back into canon
+- Do not let commercial language overwrite world authority
+- If a file or source is missing, say so explicitly and stop
+- In SYSTEM_OPS, changes require: reason / risk / test / version bump
+- If the task is SYSTEM_OPS, "STOP: you are editing the system" must not appear as a blocking message
+
+## Done when
+- requested files changed only
+- ACTIVE_MANIFEST updated if new active system docs are added
+- PROJECT_LOG updated for structural changes
+- npm run build executed when repo files change
+- final report lists touched files only

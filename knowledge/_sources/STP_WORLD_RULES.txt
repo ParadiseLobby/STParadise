@@ -1,0 +1,78 @@
+STRANGER THAN PARADISE — WORLD RULES v1.0
+==========================================
+
+CORE CONCEPT
+Stranger Than Paradise is a world container, not a brand.
+It documents what happens when systems try to classify things that refuse to behave.
+Everything is either: the unstable force OR the system reacting to it.
+Nothing explains itself. Systems do NOT blend inside one piece.
+
+SYSTEM DEFINITIONS (always pick ONE per piece):
+
+SYSTEM A — RAW VISUAL / UNDERGROUND
+- Impact + spectacle allowed
+- Beauty/polish allowed
+- Must not be trendy or referencing current design trends
+- This is the event itself
+
+SYSTEM B — ICONOGRAPHY & MYTH
+- Recurring archetypes
+- Repetition > explanation
+- Timeless > trendy
+- Symbols earn meaning through reuse, not through cleverness
+
+SYSTEM C — PARADISE LOBBY (administrative processing layer)
+- Paradise Lobby is procedural residue: classification, delay, denial, registration, indifference
+- It is NEVER the event. It is what happens AFTER the event.
+- If it feels dramatic → wrong. If it feels expressive → wrong.
+
+  Layer Law (mandatory):
+  L1 EVENT (optional): the thing being processed (imported from A/B or real fragments)
+  L2 SYSTEM (mandatory): cold admin logic (status/codes/serials/stamps/redaction/dates)
+  L3 BREACH (rare): human failure/interference (scratches/handwriting/damage). Not decoration.
+
+  Typography (role-based, pick ONE per role for entire project):
+  - Bureaucracy font: plain boring human admin (1 font, stick to it)
+  - Machine font: OCR/receipt/dot-matrix (1 font, MUST appear in every Lobby piece)
+  - Directive font: rare power (1 font, ONLY for denial/access/warnings)
+  - Rules: no decorative styling. Distortion only as physical damage (scan warp/print wear).
+
+  Text behavior:
+  - Must feel cold/procedural/boring/irrelevant but intimidating
+  - Allowed: status phrases, unreadable legal blocks, real document fragments
+  - Forbidden: slogans, poetry, clever ambiguity, motivation, "design wisdom"
+
+  Color:
+  - No palette. Only availability: stamp red, copier blue, nicotine yellow, dying toner black
+  - If it looks beautiful/coordinated → remove it
+
+  Friction (mandatory):
+  - Must include at least one: print/scan/rescan/degrade OR convincingly simulated accidental wear
+  - Clean digital perfection = FAIL
+
+  Format: A3 portrait master as document surface. IG exports are secondary.
+  Release: it doesn't "post." It leaks/appears/accumulates/disappears.
+
+  Defining question: Am I creating an event, or processing one?
+  If creating → not Lobby. If processing → proceed.
+
+SYSTEM D — EXPERIMENT / BREACH
+- Tests and failures allowed
+- Document what was tested and what was learned
+- If it keeps working, it graduates into a system
+- No polish required. Raw results are valid.
+
+UNIVERSAL LAWS (all systems):
+- No explanation inside the work
+- If trendy → dead. If clever → weak. If quiet/heavy/intentional → correct.
+- No silent code edits: propose change → reason → risk → 7-day test → version bump
+
+PASS/FAIL — SYSTEM C MINIMUM:
+PASS requires ALL of:
+- L2 present (admin logic visible)
+- Machine type present (OCR/receipt/dot-matrix font somewhere)
+- Cold text behavior (no expression, no cleverness)
+- Friction present (physical damage step applied)
+- Document-first (A3 logic, not "designed for Instagram")
+- Not expressive (no drama, no beauty, no coordination)
+If any fails → FAIL.

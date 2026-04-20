@@ -52,8 +52,6 @@
 - Reduced featured body padding slightly.
 - Build re-run after patch.
 
----
-
 ## GOVERNANCE LAYER ESTABLISHED
 Date: April 2026
 
@@ -207,3 +205,33 @@ None.
 ACTIVE_MANIFEST.md — no changes required, all four filenames correct.
 npm run build — clean. Zero errors. Zero warnings. All routes rendered.
 
+---
+
+## SYSTEM CLOSURE SCAFFOLD ADDED
+Date: 2026-04-20
+
+- Completed four scaffold-only knowledge files into first operational versions:
+  `knowledge/00_START_HERE.md`, `knowledge/05_commercial_ops.md`,
+  `knowledge/06_action_registry.md`, `knowledge/07_metadata_schema.md`
+- Updated `ACTIVE_MANIFEST.md` to activate those files as authoritative
+  operating documents for entrypoint, commercial ops, automation registry,
+  and metadata schema
+
+Reason:
+- Close the remaining system scaffolds without rewriting canon or duplicating doctrine
+
+Risk:
+- New operating files could overstate authority or drift into canon if they duplicate protected rules
+
+Test:
+- Audited the four targets for scaffold-only status
+- Validated read order and authority against `knowledge/_sources/PROJECT_HIERARCHY.md`
+- Preserved `knowledge/00_canon_v3.md` through `knowledge/04_evals.md` unchanged
+- `npm run build`
+
+Version bump:
+- `knowledge/00_START_HERE.md` -> 1.0
+- `knowledge/05_commercial_ops.md` -> 1.0
+- `knowledge/06_action_registry.md` -> 1.0
+- `knowledge/07_metadata_schema.md` -> 1.0
+- `ACTIVE_MANIFEST.md` updated date and active-domain table to record activation

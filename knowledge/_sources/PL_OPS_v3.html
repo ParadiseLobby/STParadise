@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PL_OPS_v3.0</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+  :root { --paper:#E2D9C8; --ink:#1C1914; --accent:#5B6B8A; --void:#F0EBE1; --scan:#B8B0A4; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#1A1A1A; display:flex; flex-direction:column; align-items:center; padding:40px 20px; gap:48px; font-family:'Share Tech Mono','Courier New',monospace; }
+  .page { background:var(--paper); width:794px; min-height:1123px; padding:52px 60px 88px; position:relative; color:var(--ink); box-shadow:5px 5px 24px rgba(0,0,0,0.55); }
+  .page::before { content:''; position:absolute; left:0; top:0; bottom:0; width:7px; background:linear-gradient(to right,rgba(0,0,0,0.13),transparent); pointer-events:none; }
+  .doc-header { border-top:2px solid var(--ink); border-bottom:1px solid var(--ink); padding:6px 0; display:flex; justify-content:space-between; align-items:baseline; margin-bottom:36px; }
+  .doc-ref { font-size:7px; letter-spacing:.18em; color:var(--accent); text-transform:uppercase; }
+  .doc-title { font-size:7px; letter-spacing:.25em; text-transform:uppercase; }
+  .doc-copy { font-size:7px; letter-spacing:.12em; color:var(--scan); }
+  .section-label { font-size:7px; letter-spacing:.28em; color:var(--accent); text-transform:uppercase; border-bottom:1px solid var(--scan); padding-bottom:4px; margin-bottom:14px; margin-top:24px; }
+  .body-text { font-size:8.5px; letter-spacing:.04em; line-height:1.75; margin-bottom:8px; }
+  .rule { font-size:9px; letter-spacing:.05em; line-height:1.75; color:var(--ink); margin-bottom:4px; }
+  .rule-id { font-size:7px; color:var(--accent); letter-spacing:.18em; margin-right:8px; }
+  table.spec { width:100%; border-collapse:collapse; margin:8px 0; }
+  table.spec td { font-size:8px; letter-spacing:.05em; padding:6px 8px; vertical-align:top; border-bottom:1px solid rgba(28,25,20,0.1); line-height:1.65; }
+  table.spec td:first-child { color:var(--accent); letter-spacing:.15em; text-transform:uppercase; font-size:7px; width:30%; white-space:nowrap; padding-top:8px; }
+  table.spec tr:last-child td { border-bottom:none; }
+  .kill-rule { border:1px solid var(--ink); padding:10px 14px; margin:16px 0; }
+  .kill-label { font-size:7px; letter-spacing:.22em; color:var(--accent); text-transform:uppercase; margin-bottom:6px; }
+  .warning { background:var(--ink); color:var(--paper); padding:10px 14px; margin:14px 0; font-size:8px; letter-spacing:.07em; line-height:1.75; }
+  .note { font-size:7px; color:var(--scan); letter-spacing:.07em; line-height:1.65; margin-top:5px; }
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .sig-block { border-left:2px solid var(--scan); padding:8px 14px; margin-bottom:8px; }
+  .sig-name { font-size:7px; letter-spacing:.25em; color:var(--accent); text-transform:uppercase; margin-bottom:4px; }
+  .sig-rule { font-size:8px; letter-spacing:.04em; line-height:1.65; }
+  .stamp { display:inline-block; border:2px solid var(--accent); color:var(--accent); font-size:7px; letter-spacing:.2em; text-transform:uppercase; padding:3px 9px; transform:rotate(-1.8deg); opacity:.72; margin:8px 0; }
+  .swatch { display:inline-block; width:10px; height:10px; border:1px solid rgba(0,0,0,0.2); vertical-align:middle; margin-right:4px; position:relative; top:-1px; }
+  .lexicon-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; margin-top:8px; }
+  .lex-item { font-size:8px; letter-spacing:.12em; color:var(--ink); padding:6px 8px; border:1px solid rgba(28,25,20,0.15); text-transform:uppercase; }
+  .exec-row { display:flex; gap:0; border-bottom:1px solid rgba(28,25,20,0.1); min-height:28px; }
+  .exec-time { font-size:7px; letter-spacing:.12em; color:var(--accent); padding:7px 10px; border-right:1px solid rgba(28,25,20,0.12); min-width:80px; white-space:nowrap; }
+  .exec-action { font-size:8px; letter-spacing:.04em; padding:7px 10px; flex:1; line-height:1.55; }
+  .anchor-row { display:flex; gap:0; border:1px solid rgba(28,25,20,0.2); margin-bottom:2px; }
+  .anchor-id { font-size:7px; color:var(--accent); letter-spacing:.12em; padding:7px 10px; border-right:1px solid rgba(28,25,20,0.15); min-width:90px; }
+  .anchor-text { font-size:8px; letter-spacing:.04em; padding:7px 10px; flex:1; line-height:1.55; }
+  .anchor-check { font-size:7px; color:var(--scan); padding:7px 10px; border-left:1px solid rgba(28,25,20,0.15); min-width:70px; text-align:right; }
+  .dice-box { border:1px solid var(--ink); padding:12px 16px; margin:10px 0; display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .dice-title { font-size:7px; letter-spacing:.2em; color:var(--accent); text-transform:uppercase; margin-bottom:8px; grid-column:1/-1; border-bottom:1px solid rgba(28,25,20,0.15); padding-bottom:5px; }
+  .dice-col-label { font-size:7px; letter-spacing:.15em; color:var(--ink); text-transform:uppercase; margin-bottom:6px; }
+  .dice-values { display:flex; gap:6px; }
+  .dice-val { border:1px solid var(--scan); padding:4px 8px; font-size:9px; letter-spacing:.1em; color:var(--ink); min-width:40px; text-align:center; }
+  .log-row { display:flex; gap:0; border-bottom:1px solid rgba(28,25,20,0.1); min-height:28px; }
+  .log-field { font-size:7px; color:var(--accent); letter-spacing:.12em; text-transform:uppercase; padding:7px 10px; border-right:1px solid rgba(28,25,20,0.12); min-width:130px; align-self:center; }
+  .log-blank { flex:1; padding:7px 10px; font-size:8px; color:rgba(28,25,20,0.25); letter-spacing:.06em; }
+  hr { border:none; border-top:1px solid rgba(28,25,20,0.13); margin:22px 0; }
+  .page-footer { position:absolute; bottom:30px; left:60px; right:60px; border-top:1px solid var(--scan); padding-top:6px; display:flex; justify-content:space-between; }
+  .footer-ocr { font-size:6px; letter-spacing:.18em; color:var(--scan); text-transform:uppercase; }
+  .addendum { border:1px solid var(--accent); padding:10px 14px; margin:12px 0; }
+  .addendum-label { font-size:7px; letter-spacing:.22em; color:var(--accent); text-transform:uppercase; margin-bottom:6px; }
+  .col-label { font-size:7px; letter-spacing:.15em; color:var(--ink); text-transform:uppercase; margin-bottom:6px; }
+  .col-item { font-size:8px; letter-spacing:.04em; line-height:1.9; }
+  .col-item.banned { color:rgba(28,25,20,0.4); }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 — IDENTIFICATION + CORE RULES -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-ref">PL-OPS-2025-003 // REV.3</span>
+    <span class="doc-title">PARADISE LOBBY — OPERATIONS STANDARD</span>
+    <span class="doc-copy">COPY 1 OF 1</span>
+  </div>
+
+  <div class="section-label" style="margin-top:0;">Document identification</div>
+  <table class="spec">
+    <tr><td>Version</td><td>3.0 — Digital-first. No printer required. All ChatGPT corrections incorporated.</td></tr>
+    <tr><td>Primary output</td><td>Instagram 4×5 — 1080×1350px, RGB, 72dpi.</td></tr>
+    <tr><td>Color mode</td><td>RGB throughout all sessions. Convert to CMYK only if sending to print. Never before.</td></tr>
+    <tr><td>Release unit</td><td>1 CASE/DAY = 2 POSTS. One CUSTODY + one DIRECTIVE. Same case number. No orphan posters.</td></tr>
+    <tr><td>Fonts installed</td><td>DIN 1451 LT Pro (Engschrift + Mittelschrift) / D-DIN (Regular + Bold) / OCR-B / Libre Barcode 128</td></tr>
+    <tr><td>System</td><td>System C — Residue only. See PL_SYSTEMS_v1 for full classification reference.</td></tr>
+    <tr><td>Supersedes</td><td>PL-OPS-2025-001, PL-OPS-2025-002</td></tr>
+  </table>
+
+  <div class="kill-rule">
+    <div class="kill-label">Standing order — all sessions</div>
+    <div class="rule">If the document looks designed, remove one element before export. This rule supersedes everything else in this document.</div>
+  </div>
+
+  <div class="warning">
+    KILL-SWITCH: If any line in the document explains what happened or why, delete that line and replace it with [BLANK], [REDACTED], or PENDING. One explanatory sentence collapses System C into System B.
+  </div>
+
+  <div class="section-label">System classification</div>
+  <table class="spec">
+    <tr><td>DIRECTIVE</td><td>The institution acts outward. Classifies, restricts, declares. Templates D1, D2, D3. Contains a hero word at SCALE_A. Speaks toward the outside without addressing anyone.</td></tr>
+    <tr><td>CUSTODY</td><td>The institution records internally. Intake, chain, archive. Templates C1, C2, C3. No hero word. Dense form logic. Speaks to itself without understanding what it is recording.</td></tr>
+  </table>
+
+  <div class="section-label">Build order — non-negotiable</div>
+  <div class="rule">Build CUSTODY before DIRECTIVE. Every session. The institution files before it acts.</div>
+  <div class="rule" style="margin-top:4px;">Case number assigned in log before any file is opened.</div>
+
+  <div class="section-label">Case numbering</div>
+  <table class="spec">
+    <tr><td>Format</td><td>PL — [YY] — [CASE: 4 digits] — [D or C]</td></tr>
+    <tr><td>Example pair</td><td>PL-25-0001-C and PL-25-0001-D</td></tr>
+    <tr><td>Appears in</td><td>All OCR fields, barcode content, footer strings. Nowhere else.</td></tr>
+    <tr><td>PARADISE</td><td>Never appears as a readable word. Embedded in file strings only: PLB-IN/25/0001. Not as hero text, not as stamp, not as title.</td></tr>
+  </table>
+
+  <div class="section-label">Posting</div>
+  <div class="rule">Post CUSTODY first or DIRECTIVE first — decide in the log before the session opens. Minimum 4 hours between the two posts. Alternate the order each case.</div>
+
+  <div class="page-footer">
+    <span class="footer-ocr">PLB-OPS/25/003 // ATT-01</span>
+    <span class="footer-ocr">PAGE 1</span>
+  </div>
+</div>
+
+
+<!-- PAGE 2 — COLOUR + IMAGE -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-ref">PL-OPS-2025-003 // REV.3</span>
+    <span class="doc-title">COLOUR + IMAGE REGULATION</span>
+    <span class="doc-copy">COPY 1 OF 1</span>
+  </div>
+
+  <div class="warning">
+    These five values are allowed materials — not a palette. No additional colours permitted. Variation between documents comes from process only: scan simulation, damage, generation loss. Do not design with them. Use them.
+  </div>
+
+  <div class="section-label" style="margin-top:16px;">Colour values — locked</div>
+  <table class="spec">
+    <tr><td>PAPER</td><td><span class="swatch" style="background:#E2D9C8;"></span>#E2D9C8 — Background fill. PAPER_BASE layer, bottom of every PSD. Never adjusted.</td></tr>
+    <tr><td>INK</td><td><span class="swatch" style="background:#1C1914;"></span>#1C1914 — All primary type, rules, exhibit borders, form structure. Not RGB black.</td></tr>
+    <tr><td>STAMP BLUE</td><td><span class="swatch" style="background:#5B6B8A;"></span>#5B6B8A — Stamps, OCR text, field category labels. These locations only.</td></tr>
+    <tr><td>SCAN GREY</td><td><span class="swatch" style="background:#B8B0A4;"></span>#B8B0A4 — Damage layers, GRID_VISIBLE lines, secondary footer text only.</td></tr>
+    <tr><td>VOID WHITE</td><td><span class="swatch" style="background:#F0EBE1; border:1px solid #ccc;"></span>#F0EBE1 — Redaction bars and clerk correction bars over image or text content only.</td></tr>
+  </table>
+  <div class="rule" style="margin-top:8px;"><span class="rule-id">R-COL-01</span>No red. No orange. No pure RGB black (#000000). No colours outside the five above.</div>
+
+  <hr>
+
+  <div class="section-label">Image regulation</div>
+  <table class="spec">
+    <tr><td>Sources</td><td>Archival, industrial, urban infrastructure. No landscape. No cinematic framing. No expressive photography.</td></tr>
+    <tr><td>Subject matter</td><td>Corridors, facades, wire panels, stairwells, loading zones, machinery, concrete. Human presence as trace only — shadow, back turned, partial figure at edge.</td></tr>
+    <tr><td>Processing</td><td>Image → Adjustments → Desaturate. Then Curves: drag top-right point down 5–8px (highlights toward paper tone), drag bottom-left up 3–5px (shadows off pure black).</td></tr>
+    <tr><td>Exhibit border</td><td>1px INK rule, 4px inset from image edge. All templates.</td></tr>
+    <tr><td>Exhibit tag</td><td>OCR_LINE below image: EXHIBIT 01 // REF: PL-25-0001-C</td></tr>
+    <tr><td>Redaction</td><td>VOID_WHITE bar over the most identifiable portion. Not all of it. Enough to imply review occurred.</td></tr>
+  </table>
+  <div class="note">Image test: does it function because it is evidence of something, or because it looks good? If only the second — find a different image.</div>
+
+  <div class="page-footer">
+    <span class="footer-ocr">PLB-OPS/25/003 // ATT-02</span>
+    <span class="footer-ocr">PAGE 2</span>
+  </div>
+</div>
+
+
+<!-- PAGE 3 — TYPOGRAPHY -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-ref">PL-OPS-2025-003 // REV.3</span>
+    <span class="doc-title">TYPOGRAPHY REGULATION</span>
+    <span class="doc-copy">COPY 1 OF 1</span>
+  </div>
+
+  <div class="section-label" style="margin-top:0;">Fonts — actual installed fonts and usage</div>
+  <table class="spec">
+    <tr><td>DIN 1451 LT Pro Engschrift</td><td>Hero word only (SCALE_A). One per DIRECTIVE document. Never in CUSTODY. This is the condensed variant — correct for large scale.</td></tr>
+    <tr><td>DIN 1451 LT Pro Mittelschrift</td><td>Standard width. Headers and labels where DIN weight is needed without condensed form.</td></tr>
+    <tr><td>D-DIN Bold</td><td>Headers, directive frame text. Authority register.</td></tr>
+    <tr><td>D-DIN Regular</td><td>Field labels and body text. Administrative register.</td></tr>
+    <tr><td>OCR-B</td><td>Machine layer only. Case numbers, file strings, footer codes, exhibit tags. Never body text.</td></tr>
+    <tr><td>Libre Barcode 128</td><td>Barcode only. Type the case string — the font renders it as a barcode. Never readable text.</td></tr>
+  </table>
+  <div class="note">D-DIN and DIN 1451 LT Pro are close enough to function as the same institutional voice. Mixing them is not a problem — real institutions use whatever was installed on the processing computer.</div>
+
+  <div class="section-label">Size scale — three sizes only</div>
+  <table class="spec">
+    <tr><td>SCALE_A</td><td>144px minimum. Hero classification word. One per DIRECTIVE document. DIN 1451 LT Pro Engschrift only.</td></tr>
+    <tr><td>SCALE_B</td><td>20px. Headers, field category labels, directive frame text.</td></tr>
+    <tr><td>SCALE_C</td><td>16px. Form body text, field values.</td></tr>
+    <tr><td>SCALE_D</td><td>12px. OCR-B only. If unreadable at export, increase to 14px maximum.</td></tr>
+  </table>
+
+  <div class="section-label">Character style definitions</div>
+  <table class="spec">
+    <tr><td>DIN_INCIDENT</td><td>DIN 1451 LT Pro Engschrift | SCALE_A | Tracking +5 | ALL CAPS | DIRECTIVE only. One per document.</td></tr>
+    <tr><td>DIN_HEADER</td><td>D-DIN Bold | SCALE_B | Tracking +40 | ALL CAPS</td></tr>
+    <tr><td>DIN_LABEL</td><td>D-DIN Regular | SCALE_C | Tracking +20 | ALL CAPS | Field category labels</td></tr>
+    <tr><td>DIN_BODY</td><td>D-DIN Regular | SCALE_C | Tracking +10 | Sentence case | Field values</td></tr>
+    <tr><td>OCR_LINE</td><td>OCR-B | SCALE_D | Tracking +80 | #5B6B8A or INK | Footer and exhibit tags</td></tr>
+    <tr><td>OCR_MICRO</td><td>OCR-B | SCALE_D | Tracking +120 | #5B6B8A only | Barcode zone, document edges</td></tr>
+  </table>
+
+  <div class="section-label">OCR rules</div>
+  <div class="rule"><span class="rule-id">R-TYP-01</span>OCR never larger than DIN_LABEL in the same layout.</div>
+  <div class="rule" style="margin-top:4px;"><span class="rule-id">R-TYP-02</span>OCR lives at document edges only: footer strip, side margin, directly below exhibit image.</div>
+  <div class="rule" style="margin-top:4px;"><span class="rule-id">R-TYP-03</span>OCR content encodes real data — case number, scan ID, copy count. Not placeholder decoration.</div>
+  <div class="rule" style="margin-top:4px;"><span class="rule-id">R-TYP-04</span>Standard OCR_LINE format: PLB-IN/25/0001 // ATT-01 // HASH:[REDACTED]</div>
+
+  <div class="section-label">Lexicon — 12 locked words</div>
+  <div class="body-text">Hero word is a classification label. It names a state. It does not announce one. If it reads as a statement rather than a label, add more form content around it until it reads as a data point. CUSTODY documents have no hero word.</div>
+  <div class="lexicon-grid">
+    <div class="lex-item">GATEWAY</div><div class="lex-item">THRESHOLD</div><div class="lex-item">ENTRY</div><div class="lex-item">EXIT</div>
+    <div class="lex-item">LEAK</div><div class="lex-item">BREACH</div><div class="lex-item">SIGNAL</div><div class="lex-item">STATIC</div>
+    <div class="lex-item">PRESSURE</div><div class="lex-item">WITNESS</div><div class="lex-item">EVIDENCE</div><div class="lex-item">HOLD</div>
+  </div>
+  <div class="note" style="margin-top:6px;">Cover the hero word with your thumb. Does the document still function? If it collapses — build more form content before the word earns its size.</div>
+
+  <div class="page-footer">
+    <span class="footer-ocr">PLB-OPS/25/003 // ATT-03</span>
+    <span class="footer-ocr">PAGE 3</span>
+  </div>
+</div>
+
+
+<!-- PAGE 4 — GRID + LAYER STRUCTURE -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-ref">PL-OPS-2025-003 // REV.3</span>
+    <span class="doc-title">GRID + PSD STRUCTURE</span>
+    <span class="doc-copy">COPY 1 OF 1</span>
+  </div>
+
+  <div class="section-label" style="margin-top:0;">Canvas — all templates</div>
+  <table class="spec">
+    <tr><td>Size</td><td>1080 × 1350px</td></tr>
+    <tr><td>Resolution</td><td>72dpi</td></tr>
+    <tr><td>Color mode</td><td>RGB. Never CMYK during production.</td></tr>
+    <tr><td>Background</td><td>Solid fill #E2D9C8 on layer PAPER_BASE. Always bottom-most layer, below all groups.</td></tr>
+  </table>
+
+  <div class="section-label">Grid 1 — structural template</div>
+  <table class="spec">
+    <tr><td>How to build</td><td>View → New Guide Layout. Columns: 6. Rows: 12. Margins: 72px all sides. Gutter: 16px. Photoshop calculates and places all guides.</td></tr>
+    <tr><td>GRID_VISIBLE layer</td><td>New layer inside 00_GUIDES group. Line Tool, Shape mode, 1px stroke, #B8B0A4, 50% opacity. Draw along each guide with Snap to Guides ON. Toggle off at export.</td></tr>
+    <tr><td>Use</td><td>Structural rule lines, form borders, exhibit frames sit on Grid 1. It does not move between sessions.</td></tr>
+  </table>
+
+  <div class="section-label">Grid 2 — fill drift (behaviour rule)</div>
+  <div class="body-text">Grid 2 is not a drawn grid. It is a nudge rule applied to all content layers. After placing any element on Grid 1, nudge it by today's offset. This simulates the misalignment of real form-filling. Log the offset pair every session — never repeat the same pair consecutively.</div>
+
+  <div class="dice-box">
+    <div class="dice-title">Grid 2 offset — cycle through in sequence. Log values every session.</div>
+    <div>
+      <div class="dice-col-label">Horizontal (→ key)</div>
+      <div class="dice-values"><div class="dice-val">+6px</div><div class="dice-val">+8px</div><div class="dice-val">+10px</div></div>
+    </div>
+    <div>
+      <div class="dice-col-label">Vertical (↓ key)</div>
+      <div class="dice-values"><div class="dice-val">+6px</div><div class="dice-val">+8px</div><div class="dice-val">+10px</div></div>
+    </div>
+  </div>
+  <div class="note">Optional: save offset rectangles as Smart Objects (PL_GRID2_A/B/C.psd) for visual reference. One rectangle per variant, place-embedded into 00_GUIDES, eye toggled off during production.</div>
+
+  <hr>
+
+  <div class="section-label">PSD layer structure — universal, every template</div>
+  <table class="spec">
+    <tr><td>05_EXPORT_GUIDES</td><td>Carousel crop rectangles for Slides 2, 3, 4. Toggle OFF before export. Never in final image.</td></tr>
+    <tr><td>04_COLOR_GRADE</td><td>Curves adjustment (highlights toward #E2D9C8, shadows off pure black) + PAPER_BASE fill. Fixed. Never altered between sessions.</td></tr>
+    <tr><td>03_DAMAGE</td><td>One signature active maximum. Never combined. See damage section.</td></tr>
+    <tr><td>02_TYPE_ADMIN</td><td>All type, stamps, barcodes, OCR. Sub-layers top to bottom: STAMPS → BARCODES → OCR_ELEMENTS → LABELS → HERO.</td></tr>
+    <tr><td>01_IMAGE</td><td>Sub-layers: REDACTION → EXHIBIT_TAG → EXHIBIT_FRAME → IMAGE_SO (Smart Object).</td></tr>
+    <tr><td>00_GUIDES</td><td>GRID_VISIBLE + optional Grid 2 reference rectangle. Toggle off at export.</td></tr>
+  </table>
+  <div class="note">PAPER_BASE sits below all groups as the absolute bottom layer — not inside any group.</div>
+
+  <div class="page-footer">
+    <span class="footer-ocr">PLB-OPS/25/003 // ATT-04</span>
+    <span class="footer-ocr">PAGE 4</span>
+  </div>
+</div>
+
+
+<!-- PAGE 5 — DAMAGE + STAMPS + CLERK ARTIFACT -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-ref">PL-OPS-2025-003 // REV.3</span>
+    <span class="doc-title">DAMAGE / STAMPS / CLERK ARTIFACT</span>
+    <span class="doc-copy">COPY 1 OF 1</span>
+  </div>
+
+  <div class="section-label" style="margin-top:0;">Damage signatures — one per document, never combined</div>
+  <div class="body-text">Damage communicates where the document sits in the institutional chain. Select based on what that implies — not on what looks best.</div>
+
+  <div class="sig-block">
+    <div class="sig-name">SIG_A — THERMAL FADE</div>
+    <div class="sig-rule">Gradient map layer, Soft Light blend, irregular brush mask (not linear gradient), 40–60% opacity. Highlights toward #E2D9C8. Implies: receipt printer, low-security, disposable. The institution didn't expect this document to last.</div>
+  </div>
+  <div class="sig-block">
+    <div class="sig-name">SIG_B — GENERATION LOSS</div>
+    <div class="sig-rule">High-pass → Threshold → Multiply layer at 15–30% opacity. Digital method: Filter → Noise → Add Noise (Gaussian, Monochromatic, 2–4%) on Soft Light layer at 20%. Type edges roughen slightly. Implies: this has been copied repeatedly. The original is elsewhere.</div>
+  </div>
+  <div class="sig-block">
+    <div class="sig-name">SIG_C — PHYSICAL SINGLE</div>
+    <div class="sig-rule">Find a high-res scan of a fold crease, tape strip, or torn edge (archival paper texture sources). Import as Smart Object, Multiply blend, masked to document boundary. Must read as something that happened to the document, not something added to it. When SIG_C is active, no other damage layer runs.</div>
+  </div>
+  <div class="note">Damage test: on/off comparison. Difference must be perceptible but not dramatic. If dramatic — reduce opacity. If invisible — increase until just perceptible.</div>
+
+  <hr>
+
+  <div class="section-label">Stamp system</div>
+  <table class="spec">
+    <tr><td>Color</td><td>Stamp Blue (#5B6B8A) primary. INK (#1C1914) secondary.</td></tr>
+    <tr><td>Blend / opacity</td><td>Multiply only. 85–95%.</td></tr>
+    <tr><td>Rotation</td><td>±4° maximum.</td></tr>
+    <tr><td>Per document</td><td>One primary maximum. Two secondary maximum.</td></tr>
+  </table>
+  <div class="two-col" style="margin-top:12px;">
+    <div>
+      <div class="sig-name">Primary stamps — one only</div>
+      <div class="sig-rule" style="line-height:2.1;">HOLD — REVIEW PENDING<br>DENIED — INSUFFICIENT DISCLOSURE<br>NO FURTHER ACTION<br>RECEIVED — UNCLASSIFIED<br>SEIZURE ORDER ACTIVE</div>
+    </div>
+    <div>
+      <div class="sig-name">Secondary stamps — max two</div>
+      <div class="sig-rule" style="line-height:2.1;">COPY [N] OF [N]<br>INTAKE ACCEPTED<br>MANUAL REVIEW REQUIRED<br>DATE REDACTED<br>FIELD INCOMPLETE</div>
+    </div>
+  </div>
+  <div style="margin-top:10px;"><div class="stamp">HOLD — REVIEW PENDING</div></div>
+
+  <hr>
+
+  <div class="section-label">Clerk artifact — mandatory, every CUSTODY document</div>
+  <div class="body-text">One clerk artifact per CUSTODY document. This is not damage aesthetic — it is evidence that a human processed this form and made an error that the institution did not fully correct. Log which artifact was used. Do not repeat consecutively.</div>
+  <table class="spec">
+    <tr><td>Mis-typed field</td><td>Type a field label with a typo: CLASSIFCATION. Cover with a narrow VOID_WHITE bar. Type the correct version beside or below it. The correction shows the institution tried. The error shows the clerk was human.</td></tr>
+    <tr><td>Crossed-out value</td><td>A field value struck through (thin INK line over the text) and replaced: HANDLER: [strikethrough] P. VAAN → J. MARSH. The case changed hands. Someone updated the form manually.</td></tr>
+    <tr><td>Wrong reference</td><td>Footer says ATT-02 but the document is clearly ATT-01. Nobody corrected it. The institution filed an incorrectly referenced copy.</td></tr>
+    <tr><td>Double entry</td><td>One field has two values stacked — the first partially obscured by VOID_WHITE, the second written below it. The clerk filled it in twice.</td></tr>
+  </table>
+
+  <div class="page-footer">
+    <span class="footer-ocr">PLB-OPS/25/003 // ATT-05</span>
+    <span class="footer-ocr">PAGE 5</span>
+  </div>
+</div>
+
+
+<!-- PAGE 6 — CAROUSEL + STATUS VS EVENT + DAILY EXECUTION -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-ref">PL-OPS-2025-003 // REV.3</span>
+    <span class="doc-title">CAROUSEL + STATUS REGULATION + DAILY EXECUTION</span>
+    <span class="doc-copy">COPY 1 OF 1</span>
+  </div>
+
+  <div class="section-label" style="margin-top:0;">Status vs event — critical distinction</div>
+  <div class="addendum">
+    <div class="addendum-label">Addendum — Status vs Event (System C compliance)</div>
+    <div class="two-col">
+      <div>
+        <div class="col-label">Status — allowed</div>
+        <div class="col-item">PENDING REVIEW</div>
+        <div class="col-item">ON HOLD</div>
+        <div class="col-item">SUSPENDED</div>
+        <div class="col-item">UNASSIGNED</div>
+        <div class="col-item">ROUTED</div>
+        <div class="col-item">RETURNED</div>
+        <div class="col-item">HOLD — REVIEW PENDING</div>
+        <div class="col-item">CLASSIFICATION: PENDING</div>
+      </div>
+      <div>
+        <div class="col-label">Event language — banned</div>
+        <div class="col-item banned">will be completed within 30 days</div>
+        <div class="col-item banned">assessment follows</div>
+        <div class="col-item banned">you are invited to</div>
+        <div class="col-item banned">we will notify you</div>
+        <div class="col-item banned">outcome pending notification</div>
+        <div class="col-item banned">review commences [date]</div>
+        <div class="col-item banned">next steps include</div>
+      </div>
+    </div>
+    <div class="note" style="margin-top:8px; padding-left:0;">Rule: if it implies action with a finite timeline or specific outcome — System A. If it implies indefinite continuation with no resolution — System C.</div>
+  </div>
+
+  <div class="section-label">Carousel structure — every case release</div>
+  <table class="spec">
+    <tr><td>Slide 1</td><td>Full document at 1080×1350px. Feed view. Viewer decides to swipe from this alone.</td></tr>
+    <tr><td>Slide 2</td><td>Detail crop — header / stamp zone. 1:1 square. Case number, classification, field labels readable for the first time.</td></tr>
+    <tr><td>Slide 3</td><td>Detail crop — image zone. Exhibit in isolation. Tight crop. Exhibit tag visible.</td></tr>
+    <tr><td>Slide 4</td><td>Detail crop — machine layer. OCR footer, barcode, secondary stamps. For the viewer who goes furthest.</td></tr>
+    <tr><td>Slide 5 (optional)</td><td>Preview crop of the partner document — not full. Creates anticipation for the second post.</td></tr>
+  </table>
+
+  <div class="section-label">Reality artifact — mandatory from first production session</div>
+  <div class="body-text">One reality artifact per document. Not damage — evidence of process. Log it. Do not repeat consecutively.</div>
+  <div class="two-col">
+    <div class="sig-rule" style="line-height:1.9;">— Scanner bed shadow at one edge, uncorrected<br>— 1–2px crop misregistration on export<br>— Stamp impression with one edge lighter</div>
+    <div class="sig-rule" style="line-height:1.9;">— Faint horizontal line across lower third<br>— One text element at ±0.5° unintentional rotation<br>— Clerk artifact (see Page 5)</div>
+  </div>
+
+  <hr>
+
+  <div class="section-label">Daily execution — 45 minutes per session</div>
+  <div class="exec-row"><div class="exec-time">MIN 00–05</div><div class="exec-action">Log: case number, date, template pair, posting order, damage signature, Grid 2 offset pair. Open CUSTODY template.</div></div>
+  <div class="exec-row"><div class="exec-time">MIN 05–10</div><div class="exec-action">Replace IMAGE_SO. Baseline treatment (desaturate + curves). Image test: evidence or atmosphere? If atmosphere — find another. 5 min maximum.</div></div>
+  <div class="exec-row"><div class="exec-time">MIN 10–15</div><div class="exec-action">Set all OCR strings to current case number. Complete field content. Apply Grid 2 offset. Leave minimum two fields blank. Add clerk artifact.</div></div>
+  <div class="exec-row"><div class="exec-time">MIN 15–20</div><div class="exec-action">Open DIRECTIVE. Replace IMAGE_SO. Set hero word. Set stamp. Set OCR strings. Apply same Grid 2 offset values.</div></div>
+  <div class="exec-row"><div class="exec-time">MIN 20–28</div><div class="exec-action">Toggle damage signature on both. Same signature per case pair. Assess: information about institutional position, or just texture? If texture — reduce opacity. Add reality artifact to each document.</div></div>
+  <div class="exec-row"><div class="exec-time">MIN 28–38</div><div class="exec-action">Run kill-switch: find any line that explains. Replace with [REDACTED] or PENDING. Run anchor test. ANCHOR 4: remove the element that exists for aesthetic reasons. Export all carousel slides. Toggle off 05_EXPORT_GUIDES and 00_GUIDES.</div></div>
+  <div class="exec-row"><div class="exec-time">MIN 38–45</div><div class="exec-action">Log completion: element cut and why, session time. Post in decided order. Minimum 4 hours between posts.</div></div>
+
+  <div class="page-footer">
+    <span class="footer-ocr">PLB-OPS/25/003 // ATT-06</span>
+    <span class="footer-ocr">PAGE 6</span>
+  </div>
+</div>
+
+
+<!-- PAGE 7 — ANCHOR TEST + LOG + STANDING RULES -->
+<div class="page">
+  <div class="doc-header">
+    <span class="doc-ref">PL-OPS-2025-003 // REV.3</span>
+    <span class="doc-title">ANCHOR TEST + PRODUCTION LOG + RULES</span>
+    <span class="doc-copy">COPY 1 OF 1</span>
+  </div>
+
+  <div class="section-label" style="margin-top:0;">Anchor test — run on every document before export</div>
+  <div class="anchor-row">
+    <div class="anchor-id">ANCHOR 1<br><span style="font-size:6px;color:var(--scan);">SYSTEM WEIGHT</span></div>
+    <div class="anchor-text">Does it feel like one page of many, or a complete piece? Correct: one page of many. An empty field, an unresolved stamp, a file number implying more files.</div>
+    <div class="anchor-check">PASS / FAIL</div>
+  </div>
+  <div class="anchor-row">
+    <div class="anchor-id">ANCHOR 2<br><span style="font-size:6px;color:var(--scan);">TEMPERATURE</span></div>
+    <div class="anchor-text">Administratively cold — not stylishly cold. The temperature of a filing cabinet nobody has opened in three years. Any element suggesting expression or design warmth — identify and remove.</div>
+    <div class="anchor-check">PASS / FAIL</div>
+  </div>
+  <div class="anchor-row">
+    <div class="anchor-id">ANCHOR 3<br><span style="font-size:6px;color:var(--scan);">SYSTEM LEGIBLE</span></div>
+    <div class="anchor-text">Can a viewer seeing two consecutive case pairs begin to understand they are looking at an institution — without explanation? If no: case number visibility or pairing logic is failing.</div>
+    <div class="anchor-check">PASS / FAIL</div>
+  </div>
+  <div class="anchor-row" style="border-color:var(--ink);">
+    <div class="anchor-id" style="color:var(--ink);">ANCHOR 4<br><span style="font-size:6px;color:var(--scan);">NO AESTHETICS</span></div>
+    <div class="anchor-text">Is there anything existing for aesthetic reasons only? If yes — remove it. Not reduce. Remove. Then run the kill-switch: is there any line that explains what happened? Replace with [REDACTED] or PENDING.</div>
+    <div class="anchor-check" style="color:var(--ink);">PASS / FAIL</div>
+  </div>
+
+  <hr>
+
+  <div class="section-label">Production log — mandatory, one entry per session</div>
+  <div class="log-row"><div class="log-field">Case number</div><div class="log-blank">PL-25-____</div></div>
+  <div class="log-row"><div class="log-field">Date</div><div class="log-blank">&nbsp;</div></div>
+  <div class="log-row"><div class="log-field">Templates used</div><div class="log-blank">C__ + D__</div></div>
+  <div class="log-row"><div class="log-field">Grid 2 offset</div><div class="log-blank">X: __px / Y: __px</div></div>
+  <div class="log-row"><div class="log-field">Lexicon word</div><div class="log-blank">&nbsp;</div></div>
+  <div class="log-row"><div class="log-field">Stamp used</div><div class="log-blank">&nbsp;</div></div>
+  <div class="log-row"><div class="log-field">Damage sig</div><div class="log-blank">SIG_A / SIG_B / SIG_C</div></div>
+  <div class="log-row"><div class="log-field">Reality artifact</div><div class="log-blank">&nbsp;</div></div>
+  <div class="log-row"><div class="log-field">Clerk artifact</div><div class="log-blank">&nbsp;</div></div>
+  <div class="log-row"><div class="log-field">Posting order</div><div class="log-blank">C first / D first</div></div>
+  <div class="log-row"><div class="log-field">Kill-switch</div><div class="log-blank">Line removed and replaced with:</div></div>
+  <div class="log-row"><div class="log-field">Anchor 4</div><div class="log-blank">Element removed:</div></div>
+  <div class="log-row" style="min-height:38px;"><div class="log-field">Session time</div><div class="log-blank">Over / under 45 min by:</div></div>
+
+  <hr>
+
+  <div class="section-label">Standing rules — all sessions</div>
+  <div class="rule"><span class="rule-id">R.01</span>If the document looks designed, remove one element. Absolute.</div>
+  <div class="rule" style="margin-top:3px;"><span class="rule-id">R.02</span>Build CUSTODY before DIRECTIVE. Every session.</div>
+  <div class="rule" style="margin-top:3px;"><span class="rule-id">R.03</span>One damage signature per document. Never combined.</div>
+  <div class="rule" style="margin-top:3px;"><span class="rule-id">R.04</span>One primary stamp per document. Two secondary maximum.</div>
+  <div class="rule" style="margin-top:3px;"><span class="rule-id">R.05</span>PARADISE does not appear as a word. File strings only.</div>
+  <div class="rule" style="margin-top:3px;"><span class="rule-id">R.06</span>Minimum two fields incomplete on every CUSTODY document.</div>
+  <div class="rule" style="margin-top:3px;"><span class="rule-id">R.07</span>OCR never larger than DIN_LABEL in the same layout.</div>
+  <div class="rule" style="margin-top:3px;"><span class="rule-id">R.08</span>No red. No orange. No pure RGB black. No colours outside the five allowed materials.</div>
+  <div class="rule" style="margin-top:3px;"><span class="rule-id">R.09</span>Image must function as evidence. If only atmosphere — find another.</div>
+  <div class="rule" style="margin-top:3px;"><span class="rule-id">R.10</span>Log every session. The log is not optional.</div>
+  <div class="rule" style="margin-top:3px;"><span class="rule-id">R.11</span>One clerk artifact per CUSTODY document. Logged every session.</div>
+  <div class="rule" style="margin-top:3px;"><span class="rule-id">R.12</span>Kill-switch applied before every export. One explanatory line = System B. Remove it.</div>
+
+  <div class="page-footer">
+    <span class="footer-ocr">PLB-OPS/25/003 // ATT-07 // FINAL PAGE</span>
+    <span class="footer-ocr">PAGE 7</span>
+  </div>
+</div>
+
+</body>
+</html>
