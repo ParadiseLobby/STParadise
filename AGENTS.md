@@ -15,6 +15,11 @@ The website is an institutional processing layer reacting to unstable material.
 - Every major page must contain at least one friction artifact.
 - Homepage must feel like an operational surface, not a hero showcase.
 - Conversion language must remain institutional, never salesy.
+- Never delete files unless explicitly instructed.
+- Never replace app/page.tsx wholesale without explicit approval.
+- Do not modify HeroPanel.tsx, PageTransition.tsx, TransitionWrapper.tsx, or NavBrackets.tsx unless explicitly instructed.
+- Use JetBrains Mono only unless explicitly told otherwise.
+- For every patch, list files to be changed before editing.
 
 ## Typography
 Use one typeface family only unless explicitly told otherwise.
